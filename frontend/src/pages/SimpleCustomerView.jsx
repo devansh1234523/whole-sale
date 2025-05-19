@@ -1,11 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
+import CustomerContext from '../context/CustomerContext';
 import '../styles/minimal.css';
 
 const SimpleCustomerView = () => {
   const { id } = useParams();
   const { user, logout } = useContext(AuthContext);
+  const { getCustomerById } = useContext(CustomerContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [customer, setCustomer] = useState(null);
@@ -16,59 +18,14 @@ const SimpleCustomerView = () => {
   };
 
   useEffect(() => {
-    // In a real application, you would fetch the customer data from your API
-    // For now, we'll simulate fetching data
     const fetchCustomer = async () => {
       setLoading(true);
       try {
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
-        // Mock customer data based on ID
-        if (id === '1') {
-          setCustomer({
-            id: 1,
-            name: 'John Smith',
-            email: 'john.smith@example.com',
-            phone: '+1 (555) 123-4567',
-            company: 'ABC Retail',
-            segment: 'Retail',
-            industry: 'Consumer Goods',
-            address: {
-              street: '123 Main St',
-              city: 'New York',
-              state: 'NY',
-              zipCode: '10001',
-              country: 'USA'
-            },
-            totalSpent: 5250.00,
-            lastPurchase: '2023-05-10T14:30:00Z',
-            notes: 'Prefers email communication. Interested in bulk discounts.',
-            createdAt: '2023-01-15T10:30:00Z',
-            updatedAt: '2023-05-12T09:45:00Z'
-          });
-        } else if (id === '2') {
-          setCustomer({
-            id: 2,
-            name: 'Jane Doe',
-            email: 'jane.doe@example.com',
-            phone: '+1 (555) 987-6543',
-            company: 'XYZ Distributors',
-            segment: 'Distributor',
-            industry: 'Wholesale',
-            address: {
-              street: '456 Market Ave',
-              city: 'Chicago',
-              state: 'IL',
-              zipCode: '60601',
-              country: 'USA'
-            },
-            totalSpent: 12750.00,
-            lastPurchase: '2023-05-18T11:15:00Z',
-            notes: 'Key account. Monthly ordering schedule.',
-            createdAt: '2023-02-20T09:15:00Z',
-            updatedAt: '2023-05-18T11:20:00Z'
-          });
+        // Get customer from context
+        const foundCustomer = getCustomerById(parseInt(id));
+
+        if (foundCustomer) {
+          setCustomer(foundCustomer);
         } else {
           // If customer not found, navigate back to customers page
           navigate('/customers');
@@ -81,7 +38,7 @@ const SimpleCustomerView = () => {
     };
 
     fetchCustomer();
-  }, [id, navigate]);
+  }, [id, navigate, getCustomerById]);
 
   if (loading) {
     return (

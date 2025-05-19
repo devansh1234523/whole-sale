@@ -1,17 +1,19 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
+import CustomerContext from '../context/CustomerContext';
 import '../styles/minimal.css';
 
 const SimpleCustomerEdit = () => {
   const { id } = useParams();
   const { user, logout } = useContext(AuthContext);
+  const { getCustomerById, updateCustomer } = useContext(CustomerContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [formErrors, setFormErrors] = useState({});
-  
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -35,48 +37,29 @@ const SimpleCustomerEdit = () => {
   };
 
   useEffect(() => {
-    // In a real application, you would fetch the customer data from your API
-    // For now, we'll simulate fetching data
     const fetchCustomer = async () => {
       setLoading(true);
       try {
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
-        // Mock customer data based on ID
-        if (id === '1') {
+        // Get customer from context
+        const customer = getCustomerById(parseInt(id));
+
+        if (customer) {
+          // Set form data with customer data
           setFormData({
-            name: 'John Smith',
-            email: 'john.smith@example.com',
-            phone: '+1 (555) 123-4567',
-            company: 'ABC Retail',
-            segment: 'Retail',
-            industry: 'Consumer Goods',
+            name: customer.name,
+            email: customer.email,
+            phone: customer.phone || '',
+            company: customer.company || '',
+            segment: customer.segment || '',
+            industry: customer.industry || '',
             address: {
-              street: '123 Main St',
-              city: 'New York',
-              state: 'NY',
-              zipCode: '10001',
-              country: 'USA'
+              street: customer.address?.street || '',
+              city: customer.address?.city || '',
+              state: customer.address?.state || '',
+              zipCode: customer.address?.zipCode || '',
+              country: customer.address?.country || ''
             },
-            notes: 'Prefers email communication. Interested in bulk discounts.'
-          });
-        } else if (id === '2') {
-          setFormData({
-            name: 'Jane Doe',
-            email: 'jane.doe@example.com',
-            phone: '+1 (555) 987-6543',
-            company: 'XYZ Distributors',
-            segment: 'Distributor',
-            industry: 'Wholesale',
-            address: {
-              street: '456 Market Ave',
-              city: 'Chicago',
-              state: 'IL',
-              zipCode: '60601',
-              country: 'USA'
-            },
-            notes: 'Key account. Monthly ordering schedule.'
+            notes: customer.notes || ''
           });
         } else {
           // If customer not found, navigate back to customers page
@@ -90,11 +73,11 @@ const SimpleCustomerEdit = () => {
     };
 
     fetchCustomer();
-  }, [id, navigate]);
+  }, [id, navigate, getCustomerById]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     if (name.includes('.')) {
       const [parent, child] = name.split('.');
       setFormData({
@@ -114,45 +97,58 @@ const SimpleCustomerEdit = () => {
 
   const validateForm = () => {
     const errors = {};
-    
+
     if (!formData.name.trim()) {
       errors.name = 'Name is required';
     }
-    
+
     if (!formData.email.trim()) {
       errors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       errors.email = 'Email is invalid';
     }
-    
+
     if (!formData.company.trim()) {
       errors.company = 'Company is required';
     }
-    
+
     if (!formData.segment) {
       errors.segment = 'Segment is required';
     }
-    
+
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (validateForm()) {
       setIsSubmitting(true);
-      
+
       try {
-        // In a real application, you would send this data to your API
-        // For now, we'll simulate a successful API call
-        
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
+        // Get the existing customer to preserve fields not in the form
+        const existingCustomer = getCustomerById(parseInt(id));
+
+        // Update the customer with form data
+        const updatedCustomer = {
+          ...existingCustomer,
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          company: formData.company,
+          segment: formData.segment,
+          industry: formData.industry,
+          address: formData.address,
+          notes: formData.notes
+        };
+
+        // Update the customer in the context
+        updateCustomer(updatedCustomer);
+
         // Show success message
         setSuccessMessage('Customer updated successfully!');
-        
+
         // Redirect to customers page after 2 seconds
         setTimeout(() => {
           navigate('/customers');

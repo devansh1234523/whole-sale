@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ProductProvider } from './context/ProductContext';
+import { CustomerProvider } from './context/CustomerContext';
 
 // Pages
 import SimpleHome from './pages/SimpleHome';
@@ -25,9 +26,10 @@ function App() {
   return (
     <AuthProvider>
       <ProductProvider>
-        <Router>
-          <Routes>
-            <Route path="/" element={<SimpleHome />} />
+        <CustomerProvider>
+          <Router>
+            <Routes>
+              <Route path="/" element={<SimpleHome />} />
             <Route path="/login" element={<SimpleLogin />} />
             <Route path="/register" element={<SimpleRegister />} />
             <Route path="/dashboard" element={<SimpleDashboard />} />
@@ -46,7 +48,8 @@ function App() {
             <Route path="/staff" element={<SimpleStaff />} />
             {/* Add more routes as needed */}
           </Routes>
-        </Router>
+          </Router>
+        </CustomerProvider>
       </ProductProvider>
     </AuthProvider>
   );

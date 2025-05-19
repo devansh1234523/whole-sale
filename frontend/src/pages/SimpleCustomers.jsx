@@ -1,58 +1,21 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
+import CustomerContext from '../context/CustomerContext';
 import '../styles/minimal.css';
 
 const SimpleCustomers = () => {
   const { user, logout } = useContext(AuthContext);
+  const { customers, deleteCustomer } = useContext(CustomerContext);
   const navigate = useNavigate();
-  const [customers, setCustomers] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [deleteModal, setDeleteModal] = useState({
     isOpen: false,
     customerId: null,
     customerName: ''
   });
 
-  useEffect(() => {
-    // In a real application, you would fetch customers from your API
-    // For now, we'll use mock data
-    const fetchCustomers = async () => {
-      setIsLoading(true);
-      try {
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 500));
-
-        // Mock customer data
-        const mockCustomers = [
-          {
-            id: 1,
-            name: 'John Smith',
-            email: 'john.smith@example.com',
-            company: 'ABC Retail',
-            segment: 'Retail',
-            totalSpent: 5250.00
-          },
-          {
-            id: 2,
-            name: 'Jane Doe',
-            email: 'jane.doe@example.com',
-            company: 'XYZ Distributors',
-            segment: 'Distributor',
-            totalSpent: 12750.00
-          }
-        ];
-
-        setCustomers(mockCustomers);
-      } catch (error) {
-        console.error('Error fetching customers:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchCustomers();
-  }, []);
+  // No need for useEffect to fetch customers as we're using the context
 
   const handleDeleteClick = (customerId, customerName) => {
     setDeleteModal({
@@ -64,14 +27,8 @@ const SimpleCustomers = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      // In a real application, you would call your API to delete the customer
-      // For now, we'll just update the state
-
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      // Update state by filtering out the deleted customer
-      setCustomers(customers.filter(customer => customer.id !== deleteModal.customerId));
+      // Delete the customer using the context
+      deleteCustomer(deleteModal.customerId);
 
       // Close the modal
       setDeleteModal({

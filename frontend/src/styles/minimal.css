@@ -226,6 +226,12 @@ button {
   gap: 1.5rem;
 }
 
+.form-row.three-cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
 .form-section-title {
   font-size: 1.125rem;
   font-weight: 600;

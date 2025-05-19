@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import CustomerContext from '../context/CustomerContext';
+import { convertAndFormatINR } from '../utils/currencyUtils';
 import '../styles/minimal.css';
 
 const SimpleCustomers = () => {
@@ -149,7 +150,7 @@ const SimpleCustomers = () => {
                         </span>
                       </td>
                       <td style={{ fontWeight: '500', color: 'var(--success-color)' }}>
-                        ${customer.totalSpent.toFixed(2)}
+                        {convertAndFormatINR(customer.totalSpent)}
                       </td>
                       <td>
                         <div className="d-flex gap-2">

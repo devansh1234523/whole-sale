@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import InventoryContext from '../context/InventoryContext';
+import { convertAndFormatINR } from '../utils/currencyUtils';
 import '../styles/minimal.css';
 
 const SimpleInventoryView = () => {
@@ -144,7 +145,7 @@ const SimpleInventoryView = () => {
                 </div>
                 <div className="detail-group">
                   <h3 className="detail-title">Price</h3>
-                  <p className="detail-text">${inventory.product.price.toFixed(2)}</p>
+                  <p className="detail-text">{convertAndFormatINR(inventory.product.price)}</p>
                 </div>
               </div>
 

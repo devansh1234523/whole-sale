@@ -22,6 +22,7 @@ import SimpleInventory from './pages/SimpleInventory';
 import SimpleInventoryView from './pages/SimpleInventoryView';
 import SimpleInventoryEdit from './pages/SimpleInventoryEdit';
 import SimpleInventoryAddTransaction from './pages/SimpleInventoryAddTransaction';
+import SimpleInventoryBulkUpdate from './pages/SimpleInventoryBulkUpdate';
 import SimpleStaff from './pages/SimpleStaff';
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
             <Route path="/customers/:id" element={<SimpleCustomerView />} />
             <Route path="/customers/:id/edit" element={<SimpleCustomerEdit />} />
             <Route path="/inventory/add-transaction" element={<SimpleInventoryAddTransaction />} />
+            <Route path="/inventory/bulk-update" element={<SimpleInventoryBulkUpdate />} />
             <Route path="/inventory/:id/update" element={<SimpleInventoryEdit />} />
             <Route path="/inventory/:id" element={<SimpleInventoryView />} />
             <Route path="/inventory" element={<SimpleInventory />} />

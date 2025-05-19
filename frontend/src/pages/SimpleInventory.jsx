@@ -23,6 +23,10 @@ const SimpleInventory = () => {
     navigate('/inventory/add-transaction');
   };
 
+  const handleBulkUpdate = () => {
+    navigate('/inventory/bulk-update');
+  };
+
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilter({
@@ -89,9 +93,9 @@ const SimpleInventory = () => {
             <button onClick={handleAddTransaction} className="btn btn-primary mr-2">
               Add Transaction
             </button>
-            <Link to="/inventory/update" className="btn btn-secondary">
+            <button onClick={handleBulkUpdate} className="btn btn-secondary">
               Bulk Update
-            </Link>
+            </button>
           </div>
         </div>
 

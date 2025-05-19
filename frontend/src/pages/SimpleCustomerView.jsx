@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import CustomerContext from '../context/CustomerContext';
+import { convertAndFormatINR } from '../utils/currencyUtils';
 import '../styles/minimal.css';
 
 const SimpleCustomerView = () => {
@@ -136,7 +137,7 @@ const SimpleCustomerView = () => {
                 </div>
                 <div className="detail-group">
                   <h3 className="detail-title">Financial</h3>
-                  <p className="detail-text price">${customer.totalSpent.toFixed(2)} Total Spent</p>
+                  <p className="detail-text price">{convertAndFormatINR(customer.totalSpent)} Total Spent</p>
                   <p className="detail-text">Last Purchase: {new Date(customer.lastPurchase).toLocaleDateString()}</p>
                 </div>
               </div>

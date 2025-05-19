@@ -1,5 +1,74 @@
 /* Minimal Clean Design for Wholesale Management System */
 
+/* Light Theme (Default) */
+.theme-light {
+  /* Main colors */
+  --primary-color: #3a7bd5;
+  --primary-light: #5a9be6;
+  --primary-dark: #2c5f9e;
+  --secondary-color: #f0f4f8;
+  --accent-color: #00c2a8;
+
+  /* Text colors */
+  --text-dark: #2d3748;
+  --text-medium: #4a5568;
+  --text-light: #718096;
+
+  /* Status colors */
+  --success-color: #38a169;
+  --success-light: #c6f6d5;
+  --warning-color: #e9b949;
+  --warning-light: #fefcbf;
+  --danger-color: #e53e3e;
+  --danger-light: #fed7d7;
+
+  /* UI colors */
+  --border-color: #e2e8f0;
+  --background-color: #f8fafc;
+  --card-background: #ffffff;
+  --header-bg: #ffffff;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Dark Theme */
+.theme-dark {
+  /* Main colors */
+  --primary-color: #4299e1;
+  --primary-light: #63b3ed;
+  --primary-dark: #2b6cb0;
+  --secondary-color: #2d3748;
+  --accent-color: #00c2a8;
+
+  /* Text colors */
+  --text-dark: #f7fafc;
+  --text-medium: #e2e8f0;
+  --text-light: #a0aec0;
+
+  /* Status colors */
+  --success-color: #48bb78;
+  --success-light: #1c4532;
+  --warning-color: #ecc94b;
+  --warning-light: #744210;
+  --danger-color: #f56565;
+  --danger-light: #742a2a;
+
+  /* UI colors */
+  --border-color: #4a5568;
+  --background-color: #1a202c;
+  --card-background: #2d3748;
+  --header-bg: #1a202c;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+/* Default theme for compatibility */
 :root {
   /* Main colors */
   --primary-color: #3a7bd5;
@@ -56,6 +125,7 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1.5;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 a {
@@ -81,10 +151,11 @@ button {
 
 /* Header */
 .header {
-  background-color: white;
+  background-color: var(--header-bg);
   border-bottom: 1px solid var(--border-color);
   padding: var(--spacing-md) 0;
   box-shadow: var(--shadow-sm);
+  transition: background-color 0.3s ease;
 }
 
 .header-container {
@@ -201,6 +272,7 @@ button {
   box-shadow: var(--shadow);
   margin-bottom: 1.5rem;
   overflow: hidden;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card-body {
@@ -925,5 +997,30 @@ textarea.form-control {
 
 .quick-action-icon {
   margin-right: 10px;
+  font-size: 1.25rem;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: var(--text-medium);
+  font-size: 1.25rem;
+  transition: background-color 0.2s ease;
+  margin-left: 1rem;
+}
+
+.theme-toggle:hover {
+  background-color: var(--secondary-color);
+}
+
+.theme-toggle-icon {
   font-size: 1.25rem;
 }

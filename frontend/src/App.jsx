@@ -4,6 +4,7 @@ import { ProductProvider } from './context/ProductContext';
 import { CustomerProvider } from './context/CustomerContext';
 import { InventoryProvider } from './context/InventoryContext';
 import { StaffProvider } from './context/StaffContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 // Pages
 import SimpleHome from './pages/SimpleHome';
@@ -31,13 +32,14 @@ import SimpleStaffEdit from './pages/SimpleStaffEdit';
 
 function App() {
   return (
-    <AuthProvider>
-      <ProductProvider>
-        <CustomerProvider>
-          <InventoryProvider>
-            <StaffProvider>
-              <Router>
-                <Routes>
+    <ThemeProvider>
+      <AuthProvider>
+        <ProductProvider>
+          <CustomerProvider>
+            <InventoryProvider>
+              <StaffProvider>
+                <Router>
+                  <Routes>
                 <Route path="/" element={<SimpleHome />} />
             <Route path="/login" element={<SimpleLogin />} />
             <Route path="/register" element={<SimpleRegister />} />
@@ -61,13 +63,14 @@ function App() {
             <Route path="/staff/:id" element={<SimpleStaffView />} />
             <Route path="/staff" element={<SimpleStaff />} />
             {/* Add more routes as needed */}
-                </Routes>
-              </Router>
-            </StaffProvider>
-          </InventoryProvider>
-        </CustomerProvider>
-      </ProductProvider>
-    </AuthProvider>
+                  </Routes>
+                </Router>
+              </StaffProvider>
+            </InventoryProvider>
+          </CustomerProvider>
+        </ProductProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

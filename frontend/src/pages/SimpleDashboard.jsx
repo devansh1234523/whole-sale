@@ -5,6 +5,8 @@ import ProductContext from '../context/ProductContext';
 import CustomerContext from '../context/CustomerContext';
 import InventoryContext from '../context/InventoryContext';
 import StaffContext from '../context/StaffContext';
+import ThemeContext from '../context/ThemeContext';
+import Header from '../components/Header';
 import '../styles/minimal.css';
 
 const SimpleDashboard = () => {
@@ -89,22 +91,7 @@ const SimpleDashboard = () => {
 
   return (
     <div className="fade-in">
-      <header className="header">
-        <div className="container header-container">
-          <Link to="/" className="brand">WholesaleFlow</Link>
-
-          <nav className="nav">
-            <Link to="/dashboard" className="nav-link active">Dashboard</Link>
-            <Link to="/products" className="nav-link">Products</Link>
-            <Link to="/customers" className="nav-link">Customers</Link>
-            <Link to="/inventory" className="nav-link">Inventory</Link>
-            {user && user.role === 'admin' && (
-              <Link to="/staff" className="nav-link">Staff</Link>
-            )}
-            <Link to="/login" onClick={handleLogout} className="nav-link">Logout</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <div className="container">
         <div className="page-header">

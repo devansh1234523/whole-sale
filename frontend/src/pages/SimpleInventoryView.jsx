@@ -7,7 +7,7 @@ import '../styles/minimal.css';
 const SimpleInventoryView = () => {
   const { id } = useParams();
   const { user, logout } = useContext(AuthContext);
-  const { getInventoryById } = useContext(InventoryContext);
+  const { getInventoryById, inventoryItems } = useContext(InventoryContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [inventory, setInventory] = useState(null);
@@ -40,7 +40,7 @@ const SimpleInventoryView = () => {
     };
 
     fetchInventory();
-  }, [id, navigate, getInventoryById]);
+  }, [id, navigate, getInventoryById, inventoryItems]);
 
   if (loading) {
     return (
@@ -184,8 +184,14 @@ const SimpleInventoryView = () => {
                   <tr key={transaction.id}>
                     <td>{new Date(transaction.date).toLocaleString()}</td>
                     <td>
-                      <span className={`badge ${transaction.type === 'in' ? 'badge-success' : 'badge-warning'}`}>
-                        {transaction.type === 'in' ? 'Stock In' : 'Stock Out'}
+                      <span className={`badge ${
+                        transaction.type === 'in' ? 'badge-success' :
+                        transaction.type === 'out' ? 'badge-warning' :
+                        'badge-info'
+                      }`}>
+                        {transaction.type === 'in' ? 'Stock In' :
+                         transaction.type === 'out' ? 'Stock Out' :
+                         'Adjustment'}
                       </span>
                     </td>
                     <td>{transaction.quantity}</td>

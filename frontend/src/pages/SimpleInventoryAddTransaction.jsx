@@ -7,15 +7,15 @@ import '../styles/minimal.css';
 
 const SimpleInventoryAddTransaction = () => {
   const { user, logout } = useContext(AuthContext);
-  const { inventoryItems, addTransaction } = useContext(InventoryContext);
+  const { inventoryItems, addTransaction, getInventoryById } = useContext(InventoryContext);
   const { products } = useContext(ProductContext);
   const navigate = useNavigate();
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [formErrors, setFormErrors] = useState({});
-  
+
   const [formData, setFormData] = useState({
     inventoryId: '',
     type: 'in',
@@ -38,21 +38,21 @@ const SimpleInventoryAddTransaction = () => {
 
   const validateForm = () => {
     const errors = {};
-    
+
     if (!formData.inventoryId) {
       errors.inventoryId = 'Please select a product';
     }
-    
+
     if (!formData.quantity.trim()) {
       errors.quantity = 'Quantity is required';
     } else if (isNaN(parseInt(formData.quantity)) || parseInt(formData.quantity) <= 0) {
       errors.quantity = 'Quantity must be a positive number';
     }
-    
+
     if (!formData.reason.trim()) {
       errors.reason = 'Reason is required';
     }
-    
+
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -60,24 +60,29 @@ const SimpleInventoryAddTransaction = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
-    
+
     if (validateForm()) {
       setIsSubmitting(true);
-      
+
       try {
+        // Get the inventory item to check current quantity for adjustments
+        const inventoryItem = getInventoryById(parseInt(formData.inventoryId));
+
         // Add the transaction using the context
         const result = addTransaction(parseInt(formData.inventoryId), {
           type: formData.type,
-          quantity: parseInt(formData.quantity),
+          quantity: formData.type === 'adjustment'
+            ? parseInt(formData.quantity) // For adjustment, use the new quantity directly
+            : parseInt(formData.quantity), // For in/out, use the quantity as is
           reason: formData.reason
         });
-        
+
         if (result && result.error) {
           setErrorMessage(result.error);
         } else {
           // Show success message
           setSuccessMessage('Transaction added successfully!');
-          
+
           // Reset form after success
           setFormData({
             inventoryId: '',
@@ -85,7 +90,7 @@ const SimpleInventoryAddTransaction = () => {
             quantity: '',
             reason: ''
           });
-          
+
           // Redirect to inventory page after 2 seconds
           setTimeout(() => {
             navigate('/inventory');

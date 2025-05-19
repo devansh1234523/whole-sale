@@ -45,10 +45,10 @@ function App() {
             <Route path="/customers/add" element={<SimpleAddCustomer />} />
             <Route path="/customers/:id" element={<SimpleCustomerView />} />
             <Route path="/customers/:id/edit" element={<SimpleCustomerEdit />} />
-            <Route path="/inventory" element={<SimpleInventory />} />
             <Route path="/inventory/add-transaction" element={<SimpleInventoryAddTransaction />} />
-            <Route path="/inventory/:id" element={<SimpleInventoryView />} />
             <Route path="/inventory/:id/update" element={<SimpleInventoryEdit />} />
+            <Route path="/inventory/:id" element={<SimpleInventoryView />} />
+            <Route path="/inventory" element={<SimpleInventory />} />
             <Route path="/staff" element={<SimpleStaff />} />
             {/* Add more routes as needed */}
               </Routes>

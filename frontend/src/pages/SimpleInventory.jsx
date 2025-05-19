@@ -81,17 +81,11 @@ const SimpleInventory = () => {
       <div className="container">
         <div className="page-header">
           <h1 className="page-title">Inventory</h1>
-          <div className="d-flex gap-2">
-            <Link
-              to="/inventory/add-transaction"
-              className="btn btn-primary"
-            >
+          <div>
+            <Link to="/inventory/add-transaction" className="btn btn-primary mr-2">
               Add Transaction
             </Link>
-            <Link
-              to="/inventory/update"
-              className="btn btn-secondary"
-            >
+            <Link to="/inventory/update" className="btn btn-secondary">
               Bulk Update
             </Link>
           </div>

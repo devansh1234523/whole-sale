@@ -1,16 +1,63 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
+import InventoryContext from '../context/InventoryContext';
 import '../styles/minimal.css';
 
 const SimpleInventory = () => {
   const { user, logout } = useContext(AuthContext);
+  const { inventoryItems } = useContext(InventoryContext);
   const navigate = useNavigate();
+  const [filter, setFilter] = useState({
+    category: '',
+    stockStatus: '',
+    search: ''
+  });
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilter({
+      ...filter,
+      [name]: value
+    });
+  };
+
+  // Filter inventory items based on filter criteria
+  const filteredInventory = inventoryItems.filter(item => {
+    // Filter by category
+    if (filter.category && item.product.category !== filter.category) {
+      return false;
+    }
+
+    // Filter by stock status
+    if (filter.stockStatus) {
+      if (filter.stockStatus === 'inStock' && item.quantity <= 5) {
+        return false;
+      }
+      if (filter.stockStatus === 'lowStock' && (item.quantity === 0 || item.quantity > 5)) {
+        return false;
+      }
+      if (filter.stockStatus === 'outOfStock' && item.quantity > 0) {
+        return false;
+      }
+    }
+
+    // Filter by search term
+    if (filter.search) {
+      const searchTerm = filter.search.toLowerCase();
+      return (
+        item.product.name.toLowerCase().includes(searchTerm) ||
+        item.product.sku.toLowerCase().includes(searchTerm)
+      );
+    }
+
+    return true;
+  });
 
   return (
     <div className="fade-in">
@@ -59,7 +106,10 @@ const SimpleInventory = () => {
                 </label>
                 <select
                   id="category"
+                  name="category"
                   className="form-control"
+                  value={filter.category}
+                  onChange={handleFilterChange}
                 >
                   <option value="">All Categories</option>
                   <option value="Massager">Massager</option>
@@ -75,7 +125,10 @@ const SimpleInventory = () => {
                 </label>
                 <select
                   id="stockStatus"
+                  name="stockStatus"
                   className="form-control"
+                  value={filter.stockStatus}
+                  onChange={handleFilterChange}
                 >
                   <option value="">All</option>
                   <option value="inStock">In Stock</option>
@@ -91,8 +144,11 @@ const SimpleInventory = () => {
                 <input
                   type="text"
                   id="search"
+                  name="search"
                   placeholder="Search by name or SKU"
                   className="form-control"
+                  value={filter.search}
+                  onChange={handleFilterChange}
                 />
               </div>
             </div>
@@ -114,84 +170,50 @@ const SimpleInventory = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td style={{ fontWeight: '500' }}>Sample Product 1</td>
-                  <td>SKU-001</td>
-                  <td>
-                    <span style={{
-                      display: 'inline-block',
-                      color: 'var(--text-medium)',
-                      fontWeight: '500'
-                    }}>
-                      Massager
-                    </span>
-                  </td>
-                  <td>25</td>
-                  <td>
-                    <span className="badge badge-success">
-                      In Stock
-                    </span>
-                  </td>
-                  <td>2023-05-15</td>
-                  <td>
-                    <div className="d-flex gap-2">
-                      <Link to="/inventory/1" className="action-link">View</Link>
-                      <Link to="/inventory/1/update" className="action-link edit">Update</Link>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td style={{ fontWeight: '500' }}>Sample Product 2</td>
-                  <td>SKU-002</td>
-                  <td>
-                    <span style={{
-                      display: 'inline-block',
-                      color: 'var(--text-medium)',
-                      fontWeight: '500'
-                    }}>
-                      Toys
-                    </span>
-                  </td>
-                  <td>3</td>
-                  <td>
-                    <span className="badge badge-warning">
-                      Low Stock
-                    </span>
-                  </td>
-                  <td>2023-05-20</td>
-                  <td>
-                    <div className="d-flex gap-2">
-                      <Link to="/inventory/2" className="action-link">View</Link>
-                      <Link to="/inventory/2/update" className="action-link edit">Update</Link>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td style={{ fontWeight: '500' }}>Sample Product 3</td>
-                  <td>SKU-003</td>
-                  <td>
-                    <span style={{
-                      display: 'inline-block',
-                      color: 'var(--text-medium)',
-                      fontWeight: '500'
-                    }}>
-                      Books
-                    </span>
-                  </td>
-                  <td>0</td>
-                  <td>
-                    <span className="badge badge-danger">
-                      Out of Stock
-                    </span>
-                  </td>
-                  <td>2023-05-10</td>
-                  <td>
-                    <div className="d-flex gap-2">
-                      <Link to="/inventory/3" className="action-link">View</Link>
-                      <Link to="/inventory/3/update" className="action-link edit">Update</Link>
-                    </div>
-                  </td>
-                </tr>
+                {filteredInventory.length === 0 ? (
+                  <tr>
+                    <td colSpan="7" className="text-center py-4">No inventory items found matching your criteria</td>
+                  </tr>
+                ) : (
+                  filteredInventory.map(item => (
+                    <tr key={item.id}>
+                      <td style={{ fontWeight: '500' }}>{item.product.name}</td>
+                      <td>{item.product.sku}</td>
+                      <td>
+                        <span style={{
+                          display: 'inline-block',
+                          color: 'var(--text-medium)',
+                          fontWeight: '500'
+                        }}>
+                          {item.product.category}
+                        </span>
+                      </td>
+                      <td>{item.quantity}</td>
+                      <td>
+                        {item.quantity === 0 ? (
+                          <span className="badge badge-danger">
+                            Out of Stock
+                          </span>
+                        ) : item.quantity <= 5 ? (
+                          <span className="badge badge-warning">
+                            Low Stock
+                          </span>
+                        ) : (
+                          <span className="badge badge-success">
+                            In Stock
+                          </span>
+                        )}
+                      </td>
+                      <td>{new Date(item.lastUpdated).toLocaleDateString()}</td>
+                      <td>
+                        <div className="d-flex gap-2">
+                          <Link to={`/inventory/${item.id}`} className="action-link">View</Link>
+                          <Link to={`/inventory/${item.id}/update`} className="action-link edit">Update</Link>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

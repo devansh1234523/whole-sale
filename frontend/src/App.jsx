@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ProductProvider } from './context/ProductContext';
 import { CustomerProvider } from './context/CustomerContext';
+import { InventoryProvider } from './context/InventoryContext';
 
 // Pages
 import SimpleHome from './pages/SimpleHome';
@@ -20,6 +21,7 @@ import SimpleCustomerEdit from './pages/SimpleCustomerEdit';
 import SimpleInventory from './pages/SimpleInventory';
 import SimpleInventoryView from './pages/SimpleInventoryView';
 import SimpleInventoryEdit from './pages/SimpleInventoryEdit';
+import SimpleInventoryAddTransaction from './pages/SimpleInventoryAddTransaction';
 import SimpleStaff from './pages/SimpleStaff';
 
 function App() {
@@ -27,8 +29,9 @@ function App() {
     <AuthProvider>
       <ProductProvider>
         <CustomerProvider>
-          <Router>
-            <Routes>
+          <InventoryProvider>
+            <Router>
+              <Routes>
               <Route path="/" element={<SimpleHome />} />
             <Route path="/login" element={<SimpleLogin />} />
             <Route path="/register" element={<SimpleRegister />} />
@@ -43,12 +46,14 @@ function App() {
             <Route path="/customers/:id" element={<SimpleCustomerView />} />
             <Route path="/customers/:id/edit" element={<SimpleCustomerEdit />} />
             <Route path="/inventory" element={<SimpleInventory />} />
+            <Route path="/inventory/add-transaction" element={<SimpleInventoryAddTransaction />} />
             <Route path="/inventory/:id" element={<SimpleInventoryView />} />
             <Route path="/inventory/:id/update" element={<SimpleInventoryEdit />} />
             <Route path="/staff" element={<SimpleStaff />} />
             {/* Add more routes as needed */}
-          </Routes>
-          </Router>
+              </Routes>
+            </Router>
+          </InventoryProvider>
         </CustomerProvider>
       </ProductProvider>
     </AuthProvider>

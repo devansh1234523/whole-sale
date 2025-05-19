@@ -1,17 +1,19 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
+import InventoryContext from '../context/InventoryContext';
 import '../styles/minimal.css';
 
 const SimpleInventoryEdit = () => {
   const { id } = useParams();
   const { user, logout } = useContext(AuthContext);
+  const { getInventoryById, addTransaction, updateInventory } = useContext(InventoryContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [formErrors, setFormErrors] = useState({});
-  
+
   const [formData, setFormData] = useState({
     quantity: '',
     transactionType: 'adjustment',
@@ -23,7 +25,7 @@ const SimpleInventoryEdit = () => {
       shelf: ''
     }
   });
-  
+
   const [productInfo, setProductInfo] = useState({
     name: '',
     sku: '',
@@ -37,51 +39,31 @@ const SimpleInventoryEdit = () => {
   };
 
   useEffect(() => {
-    // In a real application, you would fetch the inventory data from your API
-    // For now, we'll simulate fetching data
     const fetchInventory = async () => {
       setLoading(true);
       try {
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
-        // Mock inventory data based on ID
-        if (id === '1') {
+        // Get inventory from context
+        const inventoryItem = getInventoryById(parseInt(id));
+
+        if (inventoryItem) {
+          // Set product info
           setProductInfo({
-            name: 'Sample Product 1',
-            sku: 'SKU-001',
-            category: 'Massager',
-            currentQuantity: 25
+            name: inventoryItem.product.name,
+            sku: inventoryItem.product.sku,
+            category: inventoryItem.product.category,
+            currentQuantity: inventoryItem.quantity
           });
-          
+
+          // Set form data
           setFormData({
-            quantity: '25',
+            quantity: inventoryItem.quantity.toString(),
             transactionType: 'adjustment',
             transactionQuantity: '',
             transactionReason: '',
             location: {
-              warehouse: 'Main Warehouse',
-              section: 'A',
-              shelf: '3'
-            }
-          });
-        } else if (id === '2') {
-          setProductInfo({
-            name: 'Sample Product 2',
-            sku: 'SKU-002',
-            category: 'Toys',
-            currentQuantity: 3
-          });
-          
-          setFormData({
-            quantity: '3',
-            transactionType: 'adjustment',
-            transactionQuantity: '',
-            transactionReason: '',
-            location: {
-              warehouse: 'Main Warehouse',
-              section: 'B',
-              shelf: '1'
+              warehouse: inventoryItem.location.warehouse || '',
+              section: inventoryItem.location.section || '',
+              shelf: inventoryItem.location.shelf || ''
             }
           });
         } else {
@@ -96,11 +78,11 @@ const SimpleInventoryEdit = () => {
     };
 
     fetchInventory();
-  }, [id, navigate]);
+  }, [id, navigate, getInventoryById]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     if (name.includes('.')) {
       const [parent, child] = name.split('.');
       setFormData({
@@ -120,14 +102,14 @@ const SimpleInventoryEdit = () => {
 
   const validateForm = () => {
     const errors = {};
-    
+
     if (formData.transactionType !== 'adjustment') {
       if (!formData.transactionQuantity.trim()) {
         errors.transactionQuantity = 'Transaction quantity is required';
       } else if (isNaN(parseInt(formData.transactionQuantity)) || parseInt(formData.transactionQuantity) <= 0) {
         errors.transactionQuantity = 'Transaction quantity must be a positive number';
       }
-      
+
       if (!formData.transactionReason.trim()) {
         errors.transactionReason = 'Reason is required';
       }
@@ -138,31 +120,75 @@ const SimpleInventoryEdit = () => {
         errors.quantity = 'Quantity must be a non-negative number';
       }
     }
-    
+
     if (!formData.location.warehouse.trim()) {
       errors['location.warehouse'] = 'Warehouse is required';
     }
-    
+
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (validateForm()) {
       setIsSubmitting(true);
-      
+
       try {
-        // In a real application, you would send this data to your API
-        // For now, we'll simulate a successful API call
-        
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
+        const inventoryItem = getInventoryById(parseInt(id));
+
+        if (formData.transactionType === 'adjustment') {
+          // Update the inventory with direct adjustment
+          const updatedInventory = {
+            ...inventoryItem,
+            quantity: parseInt(formData.quantity),
+            location: formData.location
+          };
+
+          updateInventory(updatedInventory);
+
+          // Add a transaction record for the adjustment
+          addTransaction(parseInt(id), {
+            type: 'adjustment',
+            quantity: parseInt(formData.quantity),
+            reason: 'Direct adjustment'
+          });
+        } else {
+          // Add a transaction (in or out)
+          const result = addTransaction(parseInt(id), {
+            type: formData.transactionType,
+            quantity: parseInt(formData.transactionQuantity),
+            reason: formData.transactionReason
+          });
+
+          if (result && result.error) {
+            setFormErrors({
+              ...formErrors,
+              transactionQuantity: result.error
+            });
+            setIsSubmitting(false);
+            return;
+          }
+
+          // Update the location if changed
+          if (
+            inventoryItem.location.warehouse !== formData.location.warehouse ||
+            inventoryItem.location.section !== formData.location.section ||
+            inventoryItem.location.shelf !== formData.location.shelf
+          ) {
+            const updatedInventory = {
+              ...inventoryItem,
+              location: formData.location
+            };
+
+            updateInventory(updatedInventory);
+          }
+        }
+
         // Show success message
         setSuccessMessage('Inventory updated successfully!');
-        
+
         // Redirect to inventory page after 2 seconds
         setTimeout(() => {
           navigate('/inventory');

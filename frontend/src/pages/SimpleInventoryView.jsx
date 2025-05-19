@@ -1,11 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
+import InventoryContext from '../context/InventoryContext';
 import '../styles/minimal.css';
 
 const SimpleInventoryView = () => {
   const { id } = useParams();
   const { user, logout } = useContext(AuthContext);
+  const { getInventoryById } = useContext(InventoryContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [inventory, setInventory] = useState(null);
@@ -17,99 +19,15 @@ const SimpleInventoryView = () => {
   };
 
   useEffect(() => {
-    // In a real application, you would fetch the inventory data from your API
-    // For now, we'll simulate fetching data
     const fetchInventory = async () => {
       setLoading(true);
       try {
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
-        // Mock inventory data based on ID
-        if (id === '1') {
-          setInventory({
-            id: 1,
-            product: {
-              id: 1,
-              name: 'Sample Product 1',
-              sku: 'SKU-001',
-              category: 'Massager',
-              price: 99.99
-            },
-            quantity: 25,
-            location: {
-              warehouse: 'Main Warehouse',
-              section: 'A',
-              shelf: '3'
-            },
-            lastUpdated: '2023-05-15T10:30:00Z',
-            createdAt: '2023-01-15T10:30:00Z'
-          });
-          
-          setTransactions([
-            {
-              id: 1,
-              type: 'in',
-              quantity: 30,
-              date: '2023-01-15T10:30:00Z',
-              reason: 'Initial stock',
-              performedBy: 'Admin User'
-            },
-            {
-              id: 2,
-              type: 'out',
-              quantity: 5,
-              date: '2023-02-20T14:45:00Z',
-              reason: 'Order #12345',
-              performedBy: 'Sales Rep'
-            }
-          ]);
-        } else if (id === '2') {
-          setInventory({
-            id: 2,
-            product: {
-              id: 2,
-              name: 'Sample Product 2',
-              sku: 'SKU-002',
-              category: 'Toys',
-              price: 49.99
-            },
-            quantity: 3,
-            location: {
-              warehouse: 'Main Warehouse',
-              section: 'B',
-              shelf: '1'
-            },
-            lastUpdated: '2023-05-20T09:15:00Z',
-            createdAt: '2023-02-10T11:30:00Z'
-          });
-          
-          setTransactions([
-            {
-              id: 3,
-              type: 'in',
-              quantity: 15,
-              date: '2023-02-10T11:30:00Z',
-              reason: 'Initial stock',
-              performedBy: 'Admin User'
-            },
-            {
-              id: 4,
-              type: 'out',
-              quantity: 10,
-              date: '2023-04-05T13:20:00Z',
-              reason: 'Order #12346',
-              performedBy: 'Sales Rep'
-            },
-            {
-              id: 5,
-              type: 'out',
-              quantity: 2,
-              date: '2023-05-18T10:10:00Z',
-              reason: 'Order #12350',
-              performedBy: 'Sales Rep'
-            }
-          ]);
+        // Get inventory from context
+        const inventoryItem = getInventoryById(parseInt(id));
+
+        if (inventoryItem) {
+          setInventory(inventoryItem);
+          setTransactions(inventoryItem.transactions || []);
         } else {
           // If inventory not found, navigate back to inventory page
           navigate('/inventory');
@@ -122,7 +40,7 @@ const SimpleInventoryView = () => {
     };
 
     fetchInventory();
-  }, [id, navigate]);
+  }, [id, navigate, getInventoryById]);
 
   if (loading) {
     return (
@@ -226,8 +144,8 @@ const SimpleInventoryView = () => {
               <div className="detail-group">
                 <h3 className="detail-title">Location</h3>
                 <p className="detail-text">
-                  Warehouse: {inventory.location.warehouse}, 
-                  Section: {inventory.location.section}, 
+                  Warehouse: {inventory.location.warehouse},
+                  Section: {inventory.location.section},
                   Shelf: {inventory.location.shelf}
                 </p>
               </div>

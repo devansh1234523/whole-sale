@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
+import '../styles/minimal.css';
 
 const SimpleInventory = () => {
   const { user, logout } = useContext(AuthContext);
@@ -13,27 +14,27 @@ const SimpleInventory = () => {
 
   return (
     <div className="fade-in">
-      <nav className="navbar">
-        <div className="container navbar-container">
-          <Link to="/" className="navbar-brand">WholesaleFlow</Link>
+      <header className="header">
+        <div className="container header-container">
+          <Link to="/" className="brand">WholesaleFlow</Link>
 
-          <div className="navbar-links">
-            <Link to="/dashboard" className="navbar-link">Dashboard</Link>
-            <Link to="/products" className="navbar-link">Products</Link>
-            <Link to="/customers" className="navbar-link">Customers</Link>
-            <Link to="/inventory" className="navbar-link active">Inventory</Link>
+          <nav className="nav">
+            <Link to="/dashboard" className="nav-link">Dashboard</Link>
+            <Link to="/products" className="nav-link">Products</Link>
+            <Link to="/customers" className="nav-link">Customers</Link>
+            <Link to="/inventory" className="nav-link active">Inventory</Link>
             {user && user.role === 'admin' && (
-              <Link to="/staff" className="navbar-link">Staff</Link>
+              <Link to="/staff" className="nav-link">Staff</Link>
             )}
-            <button onClick={handleLogout} className="navbar-button">Logout</button>
-          </div>
+            <Link to="/login" onClick={handleLogout} className="nav-link">Logout</Link>
+          </nav>
         </div>
-      </nav>
+      </header>
 
       <div className="container">
-        <div className="d-flex justify-content-between align-items-center mb-4 mt-4">
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 'bold', margin: 0 }}>Inventory</h1>
-          <div style={{ display: 'flex', gap: '10px' }}>
+        <div className="page-header">
+          <h1 className="page-title">Inventory</h1>
+          <div className="d-flex gap-2">
             <Link
               to="/inventory/add-transaction"
               className="btn btn-primary"
@@ -43,17 +44,16 @@ const SimpleInventory = () => {
             <Link
               to="/inventory/update"
               className="btn btn-secondary"
-              style={{ backgroundColor: 'var(--secondary-color)', color: 'white' }}
             >
               Bulk Update
             </Link>
           </div>
         </div>
 
-        <div className="card mb-4">
+        <div className="card">
           <div className="card-body">
-            <div className="d-flex flex-column flex-md-row justify-content-between gap-3">
-              <div className="form-group">
+            <div className="d-flex justify-between align-center" style={{ flexWrap: 'wrap', gap: '1rem' }}>
+              <div className="form-group" style={{ minWidth: '200px', flex: 1 }}>
                 <label htmlFor="category" className="form-label">
                   Filter by Category
                 </label>
@@ -69,7 +69,7 @@ const SimpleInventory = () => {
                 </select>
               </div>
 
-              <div className="form-group">
+              <div className="form-group" style={{ minWidth: '200px', flex: 1 }}>
                 <label htmlFor="stockStatus" className="form-label">
                   Stock Status
                 </label>
@@ -84,7 +84,7 @@ const SimpleInventory = () => {
                 </select>
               </div>
 
-              <div className="form-group">
+              <div className="form-group" style={{ minWidth: '250px', flex: 2 }}>
                 <label htmlFor="search" className="form-label">
                   Search Products
                 </label>
@@ -115,81 +115,81 @@ const SimpleInventory = () => {
               </thead>
               <tbody>
                 <tr>
-                  <td style={{ fontWeight: '500', color: 'var(--text-dark)' }}>
-                    Sample Product 1
+                  <td style={{ fontWeight: '500' }}>Sample Product 1</td>
+                  <td>SKU-001</td>
+                  <td>
+                    <span style={{
+                      display: 'inline-block',
+                      color: 'var(--text-medium)',
+                      fontWeight: '500'
+                    }}>
+                      Massager
+                    </span>
                   </td>
-                  <td style={{ color: 'var(--text-light)' }}>
-                    SKU-001
-                  </td>
-                  <td style={{ color: 'var(--text-light)' }}>
-                    Massager
-                  </td>
-                  <td style={{ color: 'var(--text-light)' }}>
-                    25
-                  </td>
+                  <td>25</td>
                   <td>
                     <span className="badge badge-success">
                       In Stock
                     </span>
                   </td>
-                  <td style={{ color: 'var(--text-light)' }}>
-                    2023-05-15
-                  </td>
+                  <td>2023-05-15</td>
                   <td>
-                    <Link to="/inventory/1/transactions" style={{ color: 'var(--primary-color)', textDecoration: 'none', marginRight: '12px' }}>Transactions</Link>
-                    <Link to="/inventory/1/update" style={{ color: '#6366f1', textDecoration: 'none' }}>Update</Link>
+                    <div className="d-flex gap-2">
+                      <Link to="/inventory/1" className="action-link">View</Link>
+                      <Link to="/inventory/1/update" className="action-link edit">Update</Link>
+                    </div>
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ fontWeight: '500', color: 'var(--text-dark)' }}>
-                    Sample Product 2
-                  </td>
-                  <td style={{ color: 'var(--text-light)' }}>
-                    SKU-002
-                  </td>
-                  <td style={{ color: 'var(--text-light)' }}>
-                    Toys
-                  </td>
-                  <td style={{ color: 'var(--text-light)' }}>
-                    3
-                  </td>
+                  <td style={{ fontWeight: '500' }}>Sample Product 2</td>
+                  <td>SKU-002</td>
                   <td>
-                    <span className="badge badge-danger">
+                    <span style={{
+                      display: 'inline-block',
+                      color: 'var(--text-medium)',
+                      fontWeight: '500'
+                    }}>
+                      Toys
+                    </span>
+                  </td>
+                  <td>3</td>
+                  <td>
+                    <span className="badge badge-warning">
                       Low Stock
                     </span>
                   </td>
-                  <td style={{ color: 'var(--text-light)' }}>
-                    2023-05-20
-                  </td>
+                  <td>2023-05-20</td>
                   <td>
-                    <Link to="/inventory/2/transactions" style={{ color: 'var(--primary-color)', textDecoration: 'none', marginRight: '12px' }}>Transactions</Link>
-                    <Link to="/inventory/2/update" style={{ color: '#6366f1', textDecoration: 'none' }}>Update</Link>
+                    <div className="d-flex gap-2">
+                      <Link to="/inventory/2" className="action-link">View</Link>
+                      <Link to="/inventory/2/update" className="action-link edit">Update</Link>
+                    </div>
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ fontWeight: '500', color: 'var(--text-dark)' }}>
-                    Sample Product 3
-                  </td>
-                  <td style={{ color: 'var(--text-light)' }}>
-                    SKU-003
-                  </td>
-                  <td style={{ color: 'var(--text-light)' }}>
-                    Books
-                  </td>
-                  <td style={{ color: 'var(--text-light)' }}>
-                    0
-                  </td>
+                  <td style={{ fontWeight: '500' }}>Sample Product 3</td>
+                  <td>SKU-003</td>
                   <td>
-                    <span className="badge badge-warning">
+                    <span style={{
+                      display: 'inline-block',
+                      color: 'var(--text-medium)',
+                      fontWeight: '500'
+                    }}>
+                      Books
+                    </span>
+                  </td>
+                  <td>0</td>
+                  <td>
+                    <span className="badge badge-danger">
                       Out of Stock
                     </span>
                   </td>
-                  <td style={{ color: 'var(--text-light)' }}>
-                    2023-05-10
-                  </td>
+                  <td>2023-05-10</td>
                   <td>
-                    <Link to="/inventory/3/transactions" style={{ color: 'var(--primary-color)', textDecoration: 'none', marginRight: '12px' }}>Transactions</Link>
-                    <Link to="/inventory/3/update" style={{ color: '#6366f1', textDecoration: 'none' }}>Update</Link>
+                    <div className="d-flex gap-2">
+                      <Link to="/inventory/3" className="action-link">View</Link>
+                      <Link to="/inventory/3/update" className="action-link edit">Update</Link>
+                    </div>
                   </td>
                 </tr>
               </tbody>

@@ -189,7 +189,7 @@ button {
   background-color: var(--card-background);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow);
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: 1.5rem;
   overflow: hidden;
 }
 
@@ -200,6 +200,8 @@ button {
 /* Forms */
 .form-group {
   margin-bottom: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
 }
 
 .form-label {
@@ -211,11 +213,32 @@ button {
 
 .form-control {
   width: 100%;
+  height: 38px; /* Fixed height for all form controls */
   padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
   transition: var(--transition);
+  box-sizing: border-box; /* Ensures padding doesn't affect overall height */
+  line-height: 1.5;
+  display: block;
+}
+
+/* Ensure select elements have the same height and appearance */
+select.form-control {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath fill='%234a5568' d='M0 0l4 5 4-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 8px 5px;
+  padding-right: 2rem;
+}
+
+/* Special handling for textareas */
+textarea.form-control {
+  height: auto;
+  min-height: 38px;
+  resize: vertical;
 }
 
 .form-control:focus {
@@ -483,4 +506,343 @@ button {
   .login-sidebar {
     padding: 2rem 1.5rem;
   }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .detail-row {
+    flex-direction: column;
+  }
+}
+
+/* Product View Styles */
+.product-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.product-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.product-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.category-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.product-sku {
+  color: var(--text-light);
+  font-size: 0.875rem;
+}
+
+.product-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.detail-row {
+  display: flex;
+  gap: 2rem;
+}
+
+.detail-group {
+  flex: 1;
+}
+
+.detail-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.detail-text {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.detail-text.price {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+/* Form Styles */
+.form-row {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  align-items: flex-start; /* Align items at the top */
+}
+
+.form-row .form-group {
+  flex: 1;
+  min-width: 200px; /* Ensures minimum width before wrapping */
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row.two-cols .form-group {
+  flex-basis: calc(50% - 1rem);
+  flex-grow: 0;
+}
+
+/* Ensure all labels in a row have the same height */
+.form-row .form-label {
+  margin-bottom: 0.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 1.25rem;
+  color: var(--primary-color);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: var(--text-medium);
+}
+
+.btn-secondary:hover {
+  background-color: #e2e8f0;
+  color: var(--text-dark);
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.alert-success {
+  background-color: var(--success-light);
+  color: var(--success-color);
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  background-color: white;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.text-danger {
+  color: var(--danger-color);
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #e53e3e;
+}
+
+.empty-state {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-medium);
+}
+
+/* Performance Bar Styles */
+.performance-bar {
+  width: 100%;
+  background-color: #e5e7eb;
+  border-radius: 9999px;
+  height: 8px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.performance-progress {
+  height: 100%;
+}
+
+.performance-text {
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+/* Dashboard Stat Card Styles */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.stat-title {
+  font-size: 0.875rem;
+  opacity: 0.9;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.stat-link {
+  margin-top: auto;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  opacity: 1;
+}
+
+.stat-card:hover .stat-link {
+  opacity: 1;
+}
+
+.stat-card-blue {
+  background: linear-gradient(135deg, #2c5282, #3182ce);
+  color: white !important;
+}
+
+.stat-card-red {
+  background: linear-gradient(135deg, #c53030, #e53e3e);
+  color: white !important;
+}
+
+.stat-card-green {
+  background: linear-gradient(135deg, #276749, #38a169);
+  color: white !important;
+}
+
+.stat-card-purple {
+  background: linear-gradient(135deg, #6b46c1, #805ad5);
+  color: white !important;
+}
+
+/* Ensure all text elements inside stat cards remain white */
+.stat-card-blue *, .stat-card-red *, .stat-card-green *, .stat-card-purple * {
+  color: white !important;
+}
+
+/* Dashboard Grid and Quick Actions */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.quick-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.quick-action-btn {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: var(--secondary-color);
+  color: var(--text-medium);
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.quick-action-btn:hover {
+  transform: translateY(-2px);
+}
+
+.quick-action-icon {
+  margin-right: 10px;
+  font-size: 1.25rem;
 }

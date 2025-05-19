@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import '../styles/minimal.css';
@@ -6,6 +6,91 @@ import '../styles/minimal.css';
 const SimpleCustomers = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [customers, setCustomers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [deleteModal, setDeleteModal] = useState({
+    isOpen: false,
+    customerId: null,
+    customerName: ''
+  });
+
+  useEffect(() => {
+    // In a real application, you would fetch customers from your API
+    // For now, we'll use mock data
+    const fetchCustomers = async () => {
+      setIsLoading(true);
+      try {
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Mock customer data
+        const mockCustomers = [
+          {
+            id: 1,
+            name: 'John Smith',
+            email: 'john.smith@example.com',
+            company: 'ABC Retail',
+            segment: 'Retail',
+            totalSpent: 5250.00
+          },
+          {
+            id: 2,
+            name: 'Jane Doe',
+            email: 'jane.doe@example.com',
+            company: 'XYZ Distributors',
+            segment: 'Distributor',
+            totalSpent: 12750.00
+          }
+        ];
+
+        setCustomers(mockCustomers);
+      } catch (error) {
+        console.error('Error fetching customers:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCustomers();
+  }, []);
+
+  const handleDeleteClick = (customerId, customerName) => {
+    setDeleteModal({
+      isOpen: true,
+      customerId,
+      customerName
+    });
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      // In a real application, you would call your API to delete the customer
+      // For now, we'll just update the state
+
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Update state by filtering out the deleted customer
+      setCustomers(customers.filter(customer => customer.id !== deleteModal.customerId));
+
+      // Close the modal
+      setDeleteModal({
+        isOpen: false,
+        customerId: null,
+        customerName: ''
+      });
+    } catch (error) {
+      console.error('Error deleting customer:', error);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteModal({
+      isOpen: false,
+      customerId: null,
+      customerName: ''
+    });
+  };
 
   const handleLogout = () => {
     logout();
@@ -69,78 +154,85 @@ const SimpleCustomers = () => {
 
         <div className="card">
           <div className="table-container">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Company</th>
-                  <th>Segment</th>
-                  <th>Total Spent</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td style={{ fontWeight: '500' }}>John Smith</td>
-                  <td>john.smith@example.com</td>
-                  <td>
-                    <span style={{
-                      display: 'inline-block',
-                      color: 'var(--text-medium)',
-                      fontWeight: '500'
-                    }}>
-                      ABC Retail
-                    </span>
-                  </td>
-                  <td>
-                    <span className="badge badge-primary">
-                      Retail
-                    </span>
-                  </td>
-                  <td style={{ fontWeight: '500', color: 'var(--success-color)' }}>
-                    $5,250.00
-                  </td>
-                  <td>
-                    <div className="d-flex gap-2">
-                      <Link to="/customers/1" className="action-link">View</Link>
-                      <Link to="/customers/1/edit" className="action-link edit">Edit</Link>
-                      <button className="action-link delete" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>Delete</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td style={{ fontWeight: '500' }}>Jane Doe</td>
-                  <td>jane.doe@example.com</td>
-                  <td>
-                    <span style={{
-                      display: 'inline-block',
-                      color: 'var(--text-medium)',
-                      fontWeight: '500'
-                    }}>
-                      XYZ Distributors
-                    </span>
-                  </td>
-                  <td>
-                    <span className="badge badge-success">
-                      Distributor
-                    </span>
-                  </td>
-                  <td style={{ fontWeight: '500', color: 'var(--success-color)' }}>
-                    $12,750.00
-                  </td>
-                  <td>
-                    <div className="d-flex gap-2">
-                      <Link to="/customers/2" className="action-link">View</Link>
-                      <Link to="/customers/2/edit" className="action-link edit">Edit</Link>
-                      <button className="action-link delete" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>Delete</button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            {isLoading ? (
+              <div className="loading-spinner">Loading...</div>
+            ) : customers.length === 0 ? (
+              <div className="empty-state">
+                <p>No customers found. <Link to="/customers/add">Add a new customer</Link>.</p>
+              </div>
+            ) : (
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Company</th>
+                    <th>Segment</th>
+                    <th>Total Spent</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {customers.map(customer => (
+                    <tr key={customer.id}>
+                      <td style={{ fontWeight: '500' }}>{customer.name}</td>
+                      <td>{customer.email}</td>
+                      <td>
+                        <span style={{
+                          display: 'inline-block',
+                          color: 'var(--text-medium)',
+                          fontWeight: '500'
+                        }}>
+                          {customer.company}
+                        </span>
+                      </td>
+                      <td>
+                        <span className={`badge ${customer.segment === 'Retail' ? 'badge-primary' : 'badge-success'}`}>
+                          {customer.segment}
+                        </span>
+                      </td>
+                      <td style={{ fontWeight: '500', color: 'var(--success-color)' }}>
+                        ${customer.totalSpent.toFixed(2)}
+                      </td>
+                      <td>
+                        <div className="d-flex gap-2">
+                          <Link to={`/customers/${customer.id}`} className="action-link">View</Link>
+                          <Link to={`/customers/${customer.id}/edit`} className="action-link edit">Edit</Link>
+                          <button
+                            className="action-link delete"
+                            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+                            onClick={() => handleDeleteClick(customer.id, customer.name)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
+
+        {/* Delete Confirmation Modal */}
+        {deleteModal.isOpen && (
+          <div className="modal-overlay">
+            <div className="modal-container">
+              <div className="modal-header">
+                <h3>Confirm Delete</h3>
+              </div>
+              <div className="modal-body">
+                <p>Are you sure you want to delete <strong>{deleteModal.customerName}</strong>?</p>
+                <p className="text-danger">This action cannot be undone.</p>
+              </div>
+              <div className="modal-footer">
+                <button className="btn btn-secondary" onClick={handleCancelDelete}>Cancel</button>
+                <button className="btn btn-danger" onClick={handleConfirmDelete}>Delete</button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

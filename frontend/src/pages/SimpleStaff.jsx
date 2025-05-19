@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
+import '../styles/minimal.css';
 
 const SimpleStaff = () => {
   const { user, logout } = useContext(AuthContext);
@@ -20,26 +21,26 @@ const SimpleStaff = () => {
 
   return (
     <div className="fade-in">
-      <nav className="navbar">
-        <div className="container navbar-container">
-          <Link to="/" className="navbar-brand">WholesaleFlow</Link>
+      <header className="header">
+        <div className="container header-container">
+          <Link to="/" className="brand">WholesaleFlow</Link>
 
-          <div className="navbar-links">
-            <Link to="/dashboard" className="navbar-link">Dashboard</Link>
-            <Link to="/products" className="navbar-link">Products</Link>
-            <Link to="/customers" className="navbar-link">Customers</Link>
-            <Link to="/inventory" className="navbar-link">Inventory</Link>
+          <nav className="nav">
+            <Link to="/dashboard" className="nav-link">Dashboard</Link>
+            <Link to="/products" className="nav-link">Products</Link>
+            <Link to="/customers" className="nav-link">Customers</Link>
+            <Link to="/inventory" className="nav-link">Inventory</Link>
             {user && user.role === 'admin' && (
-              <Link to="/staff" className="navbar-link active">Staff</Link>
+              <Link to="/staff" className="nav-link active">Staff</Link>
             )}
-            <button onClick={handleLogout} className="navbar-button">Logout</button>
-          </div>
+            <Link to="/login" onClick={handleLogout} className="nav-link">Logout</Link>
+          </nav>
         </div>
-      </nav>
+      </header>
 
       <div className="container">
-        <div className="d-flex justify-content-between align-items-center mb-4 mt-4">
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 'bold', margin: 0 }}>Staff Management</h1>
+        <div className="page-header">
+          <h1 className="page-title">Staff Management</h1>
           <Link
             to="/staff/add"
             className="btn btn-primary"
@@ -48,10 +49,10 @@ const SimpleStaff = () => {
           </Link>
         </div>
 
-        <div className="card mb-4">
+        <div className="card">
           <div className="card-body">
-            <div className="d-flex flex-column flex-md-row justify-content-between gap-3">
-              <div className="form-group">
+            <div className="d-flex justify-between align-center" style={{ flexWrap: 'wrap', gap: '1rem' }}>
+              <div className="form-group" style={{ minWidth: '200px', flex: 1 }}>
                 <label htmlFor="department" className="form-label">
                   Filter by Department
                 </label>
@@ -67,7 +68,7 @@ const SimpleStaff = () => {
                 </select>
               </div>
 
-              <div className="form-group">
+              <div className="form-group" style={{ minWidth: '200px', flex: 1 }}>
                 <label htmlFor="status" className="form-label">
                   Status
                 </label>
@@ -81,7 +82,7 @@ const SimpleStaff = () => {
                 </select>
               </div>
 
-              <div className="form-group">
+              <div className="form-group" style={{ minWidth: '250px', flex: 2 }}>
                 <label htmlFor="search" className="form-label">
                   Search Staff
                 </label>
@@ -112,123 +113,123 @@ const SimpleStaff = () => {
               </thead>
               <tbody>
                 <tr>
-                  <td style={{ fontWeight: '500', color: 'var(--text-dark)' }}>
-                    Michael Johnson
+                  <td style={{ fontWeight: '500' }}>Michael Johnson</td>
+                  <td>
+                    <span style={{
+                      display: 'inline-block',
+                      color: 'var(--text-medium)',
+                      fontWeight: '500'
+                    }}>
+                      Sales Manager
+                    </span>
                   </td>
-                  <td style={{ color: 'var(--text-light)' }}>
-                    Sales Manager
+                  <td>
+                    <span style={{
+                      display: 'inline-block',
+                      color: 'var(--text-medium)',
+                      fontWeight: '500'
+                    }}>
+                      Sales
+                    </span>
                   </td>
-                  <td style={{ color: 'var(--text-light)' }}>
-                    Sales
-                  </td>
-                  <td style={{ color: 'var(--text-light)' }}>
-                    michael.j@example.com
-                  </td>
+                  <td>michael.j@example.com</td>
                   <td>
                     <span className="badge badge-success">
                       Active
                     </span>
                   </td>
                   <td>
-                    <div style={{
-                      width: '100%',
-                      backgroundColor: '#e5e7eb',
-                      borderRadius: '9999px',
-                      height: '8px',
-                      overflow: 'hidden'
-                    }}>
-                      <div style={{
-                        width: '85%',
-                        backgroundColor: 'var(--success-color)',
-                        height: '100%'
-                      }}></div>
+                    <div className="performance-bar">
+                      <div className="performance-progress" style={{ width: '85%', backgroundColor: 'var(--success-color)' }}></div>
                     </div>
-                    <span style={{ fontSize: '12px', color: 'var(--text-light)' }}>85%</span>
+                    <span className="performance-text">85%</span>
                   </td>
                   <td>
-                    <Link to="/staff/1" style={{ color: 'var(--primary-color)', textDecoration: 'none', marginRight: '12px' }}>View</Link>
-                    <Link to="/staff/1/edit" style={{ color: '#6366f1', textDecoration: 'none', marginRight: '12px' }}>Edit</Link>
-                    <button style={{ color: 'var(--danger-color)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, font: 'inherit', fontWeight: '500' }}>Deactivate</button>
+                    <div className="d-flex gap-2">
+                      <Link to="/staff/1" className="action-link">View</Link>
+                      <Link to="/staff/1/edit" className="action-link edit">Edit</Link>
+                      <button className="action-link delete" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>Deactivate</button>
+                    </div>
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ fontWeight: '500', color: 'var(--text-dark)' }}>
-                    Sarah Williams
+                  <td style={{ fontWeight: '500' }}>Sarah Williams</td>
+                  <td>
+                    <span style={{
+                      display: 'inline-block',
+                      color: 'var(--text-medium)',
+                      fontWeight: '500'
+                    }}>
+                      Inventory Specialist
+                    </span>
                   </td>
-                  <td style={{ color: 'var(--text-light)' }}>
-                    Inventory Specialist
+                  <td>
+                    <span style={{
+                      display: 'inline-block',
+                      color: 'var(--text-medium)',
+                      fontWeight: '500'
+                    }}>
+                      Inventory
+                    </span>
                   </td>
-                  <td style={{ color: 'var(--text-light)' }}>
-                    Inventory
-                  </td>
-                  <td style={{ color: 'var(--text-light)' }}>
-                    sarah.w@example.com
-                  </td>
+                  <td>sarah.w@example.com</td>
                   <td>
                     <span className="badge badge-success">
                       Active
                     </span>
                   </td>
                   <td>
-                    <div style={{
-                      width: '100%',
-                      backgroundColor: '#e5e7eb',
-                      borderRadius: '9999px',
-                      height: '8px',
-                      overflow: 'hidden'
-                    }}>
-                      <div style={{
-                        width: '92%',
-                        backgroundColor: 'var(--success-color)',
-                        height: '100%'
-                      }}></div>
+                    <div className="performance-bar">
+                      <div className="performance-progress" style={{ width: '92%', backgroundColor: 'var(--success-color)' }}></div>
                     </div>
-                    <span style={{ fontSize: '12px', color: 'var(--text-light)' }}>92%</span>
+                    <span className="performance-text">92%</span>
                   </td>
                   <td>
-                    <Link to="/staff/2" style={{ color: 'var(--primary-color)', textDecoration: 'none', marginRight: '12px' }}>View</Link>
-                    <Link to="/staff/2/edit" style={{ color: '#6366f1', textDecoration: 'none', marginRight: '12px' }}>Edit</Link>
-                    <button style={{ color: 'var(--danger-color)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, font: 'inherit', fontWeight: '500' }}>Deactivate</button>
+                    <div className="d-flex gap-2">
+                      <Link to="/staff/2" className="action-link">View</Link>
+                      <Link to="/staff/2/edit" className="action-link edit">Edit</Link>
+                      <button className="action-link delete" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>Deactivate</button>
+                    </div>
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ fontWeight: '500', color: 'var(--text-dark)' }}>
-                    Robert Davis
+                  <td style={{ fontWeight: '500' }}>Robert Davis</td>
+                  <td>
+                    <span style={{
+                      display: 'inline-block',
+                      color: 'var(--text-medium)',
+                      fontWeight: '500'
+                    }}>
+                      Customer Service Rep
+                    </span>
                   </td>
-                  <td style={{ color: 'var(--text-light)' }}>
-                    Customer Service Rep
+                  <td>
+                    <span style={{
+                      display: 'inline-block',
+                      color: 'var(--text-medium)',
+                      fontWeight: '500'
+                    }}>
+                      Customer Service
+                    </span>
                   </td>
-                  <td style={{ color: 'var(--text-light)' }}>
-                    Customer Service
-                  </td>
-                  <td style={{ color: 'var(--text-light)' }}>
-                    robert.d@example.com
-                  </td>
+                  <td>robert.d@example.com</td>
                   <td>
                     <span className="badge badge-danger">
                       Inactive
                     </span>
                   </td>
                   <td>
-                    <div style={{
-                      width: '100%',
-                      backgroundColor: '#e5e7eb',
-                      borderRadius: '9999px',
-                      height: '8px',
-                      overflow: 'hidden'
-                    }}>
-                      <div style={{
-                        width: '65%',
-                        backgroundColor: 'var(--warning-color)',
-                        height: '100%'
-                      }}></div>
+                    <div className="performance-bar">
+                      <div className="performance-progress" style={{ width: '65%', backgroundColor: 'var(--warning-color)' }}></div>
                     </div>
-                    <span style={{ fontSize: '12px', color: 'var(--text-light)' }}>65%</span>
+                    <span className="performance-text">65%</span>
                   </td>
                   <td>
-                    <Link to="/staff/3" style={{ color: 'var(--primary-color)', textDecoration: 'none', marginRight: '12px' }}>View</Link>
-                    <Link to="/staff/3/edit" style={{ color: '#6366f1', textDecoration: 'none', marginRight: '12px' }}>Edit</Link>
-                    <button style={{ color: 'var(--success-color)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, font: 'inherit', fontWeight: '500' }}>Activate</button>
+                    <div className="d-flex gap-2">
+                      <Link to="/staff/3" className="action-link">View</Link>
+                      <Link to="/staff/3/edit" className="action-link edit">Edit</Link>
+                      <button className="action-link" style={{ color: 'var(--success-color)', background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>Activate</button>
+                    </div>
                   </td>
                 </tr>
               </tbody>

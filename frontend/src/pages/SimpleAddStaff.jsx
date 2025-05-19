@@ -1,10 +1,12 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
+import StaffContext from '../context/StaffContext';
 import '../styles/minimal.css';
 
 const SimpleAddStaff = () => {
   const { user, logout } = useContext(AuthContext);
+  const { addStaffMember } = useContext(StaffContext);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -39,7 +41,7 @@ const SimpleAddStaff = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     if (name.includes('.')) {
       const [parent, child] = name.split('.');
       setFormData({
@@ -103,12 +105,9 @@ const SimpleAddStaff = () => {
       setIsSubmitting(true);
 
       try {
-        // Simulate adding staff member
-        console.log('Adding staff member:', formData);
-        
-        // In a real app, you would call an API or context method here
-        // For now, we'll just simulate success
-        
+        // Add the staff member using the context
+        addStaffMember(formData);
+
         // Show success message
         setSuccessMessage('Staff member added successfully!');
 

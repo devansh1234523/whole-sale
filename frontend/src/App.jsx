@@ -3,6 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import { ProductProvider } from './context/ProductContext';
 import { CustomerProvider } from './context/CustomerContext';
 import { InventoryProvider } from './context/InventoryContext';
+import { StaffProvider } from './context/StaffContext';
 
 // Pages
 import SimpleHome from './pages/SimpleHome';
@@ -34,9 +35,10 @@ function App() {
       <ProductProvider>
         <CustomerProvider>
           <InventoryProvider>
-            <Router>
-              <Routes>
-              <Route path="/" element={<SimpleHome />} />
+            <StaffProvider>
+              <Router>
+                <Routes>
+                <Route path="/" element={<SimpleHome />} />
             <Route path="/login" element={<SimpleLogin />} />
             <Route path="/register" element={<SimpleRegister />} />
             <Route path="/dashboard" element={<SimpleDashboard />} />
@@ -59,8 +61,9 @@ function App() {
             <Route path="/staff/:id" element={<SimpleStaffView />} />
             <Route path="/staff" element={<SimpleStaff />} />
             {/* Add more routes as needed */}
-              </Routes>
-            </Router>
+                </Routes>
+              </Router>
+            </StaffProvider>
           </InventoryProvider>
         </CustomerProvider>
       </ProductProvider>

@@ -1,11 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
+import StaffContext from '../context/StaffContext';
 import '../styles/minimal.css';
 
 const SimpleStaffView = () => {
   const { id } = useParams();
   const { user, logout } = useContext(AuthContext);
+  const { getStaffMemberById } = useContext(StaffContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [staffMember, setStaffMember] = useState(null);
@@ -26,63 +28,9 @@ const SimpleStaffView = () => {
     const fetchStaffMember = async () => {
       setLoading(true);
       try {
-        // In a real app, you would fetch from an API or context
-        // For now, we'll use mock data based on the ID
-        
-        // Mock data for staff members
-        const mockStaffMembers = [
-          {
-            id: 1,
-            firstName: 'Michael',
-            lastName: 'Johnson',
-            email: 'michael.j@example.com',
-            phone: '555-123-4567',
-            position: 'Sales Manager',
-            department: 'Sales',
-            hireDate: '2020-03-15',
-            salary: 75000,
-            status: 'active',
-            performance: 85,
-            notes: 'Excellent team leader with strong communication skills.',
-            createdAt: '2020-03-10T10:30:00Z',
-            updatedAt: '2023-01-15T14:45:00Z'
-          },
-          {
-            id: 2,
-            firstName: 'Sarah',
-            lastName: 'Williams',
-            email: 'sarah.w@example.com',
-            phone: '555-987-6543',
-            position: 'Inventory Specialist',
-            department: 'Inventory',
-            hireDate: '2021-05-20',
-            salary: 65000,
-            status: 'active',
-            performance: 92,
-            notes: 'Detail-oriented and highly organized.',
-            createdAt: '2021-05-15T09:20:00Z',
-            updatedAt: '2023-02-10T11:30:00Z'
-          },
-          {
-            id: 3,
-            firstName: 'Robert',
-            lastName: 'Davis',
-            email: 'robert.d@example.com',
-            phone: '555-456-7890',
-            position: 'Customer Service Rep',
-            department: 'Customer Service',
-            hireDate: '2019-11-10',
-            salary: 55000,
-            status: 'inactive',
-            performance: 65,
-            notes: 'Needs improvement in response time and customer satisfaction.',
-            createdAt: '2019-11-05T08:15:00Z',
-            updatedAt: '2022-12-01T16:20:00Z'
-          }
-        ];
-        
-        const foundStaffMember = mockStaffMembers.find(staff => staff.id === parseInt(id));
-        
+        // Get staff member from context
+        const foundStaffMember = getStaffMemberById(parseInt(id));
+
         if (foundStaffMember) {
           setStaffMember(foundStaffMember);
         } else {
@@ -206,13 +154,13 @@ const SimpleStaffView = () => {
               <div className="detail-group">
                 <h3 className="detail-title">Performance</h3>
                 <div className="performance-bar" style={{ marginBottom: '0.5rem' }}>
-                  <div 
-                    className="performance-progress" 
-                    style={{ 
-                      width: `${staffMember.performance}%`, 
-                      backgroundColor: staffMember.performance >= 80 ? 'var(--success-color)' : 
-                                      staffMember.performance >= 60 ? 'var(--warning-color)' : 
-                                      'var(--danger-color)' 
+                  <div
+                    className="performance-progress"
+                    style={{
+                      width: `${staffMember.performance}%`,
+                      backgroundColor: staffMember.performance >= 80 ? 'var(--success-color)' :
+                                      staffMember.performance >= 60 ? 'var(--warning-color)' :
+                                      'var(--danger-color)'
                     }}
                   ></div>
                 </div>

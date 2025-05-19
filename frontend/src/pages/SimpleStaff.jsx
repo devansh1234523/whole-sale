@@ -1,11 +1,18 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
+import StaffContext from '../context/StaffContext';
 import '../styles/minimal.css';
 
 const SimpleStaff = () => {
   const { user, logout } = useContext(AuthContext);
+  const { staffMembers, toggleStaffStatus } = useContext(StaffContext);
   const navigate = useNavigate();
+  const [filter, setFilter] = useState({
+    department: '',
+    status: '',
+    search: ''
+  });
 
   // Redirect non-admin users
   useEffect(() => {
@@ -30,6 +37,44 @@ const SimpleStaff = () => {
   const handleEditStaff = (id) => {
     navigate(`/staff/${id}/edit`);
   };
+
+  const handleToggleStatus = (id) => {
+    toggleStaffStatus(id);
+  };
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilter({
+      ...filter,
+      [name]: value
+    });
+  };
+
+  // Filter staff members based on filter criteria
+  const filteredStaffMembers = staffMembers.filter(staff => {
+    // Filter by department
+    if (filter.department && staff.department !== filter.department) {
+      return false;
+    }
+
+    // Filter by status
+    if (filter.status && staff.status !== filter.status) {
+      return false;
+    }
+
+    // Filter by search term
+    if (filter.search) {
+      const searchTerm = filter.search.toLowerCase();
+      return (
+        staff.firstName.toLowerCase().includes(searchTerm) ||
+        staff.lastName.toLowerCase().includes(searchTerm) ||
+        staff.position.toLowerCase().includes(searchTerm) ||
+        staff.email.toLowerCase().includes(searchTerm)
+      );
+    }
+
+    return true;
+  });
 
   return (
     <div className="fade-in">
@@ -70,7 +115,10 @@ const SimpleStaff = () => {
                 </label>
                 <select
                   id="department"
+                  name="department"
                   className="form-control"
+                  value={filter.department}
+                  onChange={handleFilterChange}
                 >
                   <option value="">All Departments</option>
                   <option value="Sales">Sales</option>
@@ -86,7 +134,10 @@ const SimpleStaff = () => {
                 </label>
                 <select
                   id="status"
+                  name="status"
                   className="form-control"
+                  value={filter.status}
+                  onChange={handleFilterChange}
                 >
                   <option value="">All</option>
                   <option value="active">Active</option>
@@ -101,8 +152,11 @@ const SimpleStaff = () => {
                 <input
                   type="text"
                   id="search"
+                  name="search"
                   placeholder="Search by name or position"
                   className="form-control"
+                  value={filter.search}
+                  onChange={handleFilterChange}
                 />
               </div>
             </div>
@@ -124,126 +178,74 @@ const SimpleStaff = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td style={{ fontWeight: '500' }}>Michael Johnson</td>
-                  <td>
-                    <span style={{
-                      display: 'inline-block',
-                      color: 'var(--text-medium)',
-                      fontWeight: '500'
-                    }}>
-                      Sales Manager
-                    </span>
-                  </td>
-                  <td>
-                    <span style={{
-                      display: 'inline-block',
-                      color: 'var(--text-medium)',
-                      fontWeight: '500'
-                    }}>
-                      Sales
-                    </span>
-                  </td>
-                  <td>michael.j@example.com</td>
-                  <td>
-                    <span className="badge badge-success">
-                      Active
-                    </span>
-                  </td>
-                  <td>
-                    <div className="performance-bar">
-                      <div className="performance-progress" style={{ width: '85%', backgroundColor: 'var(--success-color)' }}></div>
-                    </div>
-                    <span className="performance-text">85%</span>
-                  </td>
-                  <td>
-                    <div className="d-flex gap-2">
-                      <button onClick={() => handleViewStaff(1)} className="action-link" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>View</button>
-                      <button onClick={() => handleEditStaff(1)} className="action-link edit" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>Edit</button>
-                      <button className="action-link delete" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>Deactivate</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td style={{ fontWeight: '500' }}>Sarah Williams</td>
-                  <td>
-                    <span style={{
-                      display: 'inline-block',
-                      color: 'var(--text-medium)',
-                      fontWeight: '500'
-                    }}>
-                      Inventory Specialist
-                    </span>
-                  </td>
-                  <td>
-                    <span style={{
-                      display: 'inline-block',
-                      color: 'var(--text-medium)',
-                      fontWeight: '500'
-                    }}>
-                      Inventory
-                    </span>
-                  </td>
-                  <td>sarah.w@example.com</td>
-                  <td>
-                    <span className="badge badge-success">
-                      Active
-                    </span>
-                  </td>
-                  <td>
-                    <div className="performance-bar">
-                      <div className="performance-progress" style={{ width: '92%', backgroundColor: 'var(--success-color)' }}></div>
-                    </div>
-                    <span className="performance-text">92%</span>
-                  </td>
-                  <td>
-                    <div className="d-flex gap-2">
-                      <button onClick={() => handleViewStaff(2)} className="action-link" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>View</button>
-                      <button onClick={() => handleEditStaff(2)} className="action-link edit" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>Edit</button>
-                      <button className="action-link delete" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>Deactivate</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td style={{ fontWeight: '500' }}>Robert Davis</td>
-                  <td>
-                    <span style={{
-                      display: 'inline-block',
-                      color: 'var(--text-medium)',
-                      fontWeight: '500'
-                    }}>
-                      Customer Service Rep
-                    </span>
-                  </td>
-                  <td>
-                    <span style={{
-                      display: 'inline-block',
-                      color: 'var(--text-medium)',
-                      fontWeight: '500'
-                    }}>
-                      Customer Service
-                    </span>
-                  </td>
-                  <td>robert.d@example.com</td>
-                  <td>
-                    <span className="badge badge-danger">
-                      Inactive
-                    </span>
-                  </td>
-                  <td>
-                    <div className="performance-bar">
-                      <div className="performance-progress" style={{ width: '65%', backgroundColor: 'var(--warning-color)' }}></div>
-                    </div>
-                    <span className="performance-text">65%</span>
-                  </td>
-                  <td>
-                    <div className="d-flex gap-2">
-                      <button onClick={() => handleViewStaff(3)} className="action-link" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>View</button>
-                      <button onClick={() => handleEditStaff(3)} className="action-link edit" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>Edit</button>
-                      <button className="action-link" style={{ color: 'var(--success-color)', background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>Activate</button>
-                    </div>
-                  </td>
-                </tr>
+                {filteredStaffMembers.length === 0 ? (
+                  <tr>
+                    <td colSpan="7" className="text-center py-4">No staff members found matching your criteria</td>
+                  </tr>
+                ) : (
+                  filteredStaffMembers.map(staff => (
+                    <tr key={staff.id}>
+                      <td style={{ fontWeight: '500' }}>{staff.firstName} {staff.lastName}</td>
+                      <td>
+                        <span style={{
+                          display: 'inline-block',
+                          color: 'var(--text-medium)',
+                          fontWeight: '500'
+                        }}>
+                          {staff.position}
+                        </span>
+                      </td>
+                      <td>
+                        <span style={{
+                          display: 'inline-block',
+                          color: 'var(--text-medium)',
+                          fontWeight: '500'
+                        }}>
+                          {staff.department}
+                        </span>
+                      </td>
+                      <td>{staff.email}</td>
+                      <td>
+                        <span className={`badge ${staff.status === 'active' ? 'badge-success' : 'badge-danger'}`}>
+                          {staff.status === 'active' ? 'Active' : 'Inactive'}
+                        </span>
+                      </td>
+                      <td>
+                        <div className="performance-bar">
+                          <div
+                            className="performance-progress"
+                            style={{
+                              width: `${staff.performance}%`,
+                              backgroundColor: staff.performance >= 80 ? 'var(--success-color)' :
+                                              staff.performance >= 60 ? 'var(--warning-color)' :
+                                              'var(--danger-color)'
+                            }}
+                          ></div>
+                        </div>
+                        <span className="performance-text">{staff.performance}%</span>
+                      </td>
+                      <td>
+                        <div className="d-flex gap-2">
+                          <button onClick={() => handleViewStaff(staff.id)} className="action-link" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>View</button>
+                          <button onClick={() => handleEditStaff(staff.id)} className="action-link edit" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>Edit</button>
+                          <button
+                            onClick={() => handleToggleStatus(staff.id)}
+                            className="action-link"
+                            style={{
+                              color: staff.status === 'active' ? 'var(--danger-color)' : 'var(--success-color)',
+                              background: 'none',
+                              border: 'none',
+                              padding: 0,
+                              cursor: 'pointer'
+                            }}
+                          >
+                            {staff.status === 'active' ? 'Deactivate' : 'Activate'}
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

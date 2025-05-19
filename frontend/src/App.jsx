@@ -24,6 +24,9 @@ import SimpleInventoryEdit from './pages/SimpleInventoryEdit';
 import SimpleInventoryAddTransaction from './pages/SimpleInventoryAddTransaction';
 import SimpleInventoryBulkUpdate from './pages/SimpleInventoryBulkUpdate';
 import SimpleStaff from './pages/SimpleStaff';
+import SimpleAddStaff from './pages/SimpleAddStaff';
+import SimpleStaffView from './pages/SimpleStaffView';
+import SimpleStaffEdit from './pages/SimpleStaffEdit';
 
 function App() {
   return (
@@ -51,6 +54,9 @@ function App() {
             <Route path="/inventory/:id/update" element={<SimpleInventoryEdit />} />
             <Route path="/inventory/:id" element={<SimpleInventoryView />} />
             <Route path="/inventory" element={<SimpleInventory />} />
+            <Route path="/staff/add" element={<SimpleAddStaff />} />
+            <Route path="/staff/:id/edit" element={<SimpleStaffEdit />} />
+            <Route path="/staff/:id" element={<SimpleStaffView />} />
             <Route path="/staff" element={<SimpleStaff />} />
             {/* Add more routes as needed */}
               </Routes>

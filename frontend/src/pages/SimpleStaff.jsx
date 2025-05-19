@@ -19,6 +19,18 @@ const SimpleStaff = () => {
     navigate('/login');
   };
 
+  const handleAddStaff = () => {
+    navigate('/staff/add');
+  };
+
+  const handleViewStaff = (id) => {
+    navigate(`/staff/${id}`);
+  };
+
+  const handleEditStaff = (id) => {
+    navigate(`/staff/${id}/edit`);
+  };
+
   return (
     <div className="fade-in">
       <header className="header">
@@ -41,12 +53,12 @@ const SimpleStaff = () => {
       <div className="container">
         <div className="page-header">
           <h1 className="page-title">Staff Management</h1>
-          <Link
-            to="/staff/add"
+          <button
+            onClick={handleAddStaff}
             className="btn btn-primary"
           >
             Add New Staff
-          </Link>
+          </button>
         </div>
 
         <div className="card">
@@ -146,8 +158,8 @@ const SimpleStaff = () => {
                   </td>
                   <td>
                     <div className="d-flex gap-2">
-                      <Link to="/staff/1" className="action-link">View</Link>
-                      <Link to="/staff/1/edit" className="action-link edit">Edit</Link>
+                      <button onClick={() => handleViewStaff(1)} className="action-link" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>View</button>
+                      <button onClick={() => handleEditStaff(1)} className="action-link edit" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>Edit</button>
                       <button className="action-link delete" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>Deactivate</button>
                     </div>
                   </td>
@@ -186,8 +198,8 @@ const SimpleStaff = () => {
                   </td>
                   <td>
                     <div className="d-flex gap-2">
-                      <Link to="/staff/2" className="action-link">View</Link>
-                      <Link to="/staff/2/edit" className="action-link edit">Edit</Link>
+                      <button onClick={() => handleViewStaff(2)} className="action-link" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>View</button>
+                      <button onClick={() => handleEditStaff(2)} className="action-link edit" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>Edit</button>
                       <button className="action-link delete" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>Deactivate</button>
                     </div>
                   </td>
@@ -226,8 +238,8 @@ const SimpleStaff = () => {
                   </td>
                   <td>
                     <div className="d-flex gap-2">
-                      <Link to="/staff/3" className="action-link">View</Link>
-                      <Link to="/staff/3/edit" className="action-link edit">Edit</Link>
+                      <button onClick={() => handleViewStaff(3)} className="action-link" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>View</button>
+                      <button onClick={() => handleEditStaff(3)} className="action-link edit" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>Edit</button>
                       <button className="action-link" style={{ color: 'var(--success-color)', background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>Activate</button>
                     </div>
                   </td>

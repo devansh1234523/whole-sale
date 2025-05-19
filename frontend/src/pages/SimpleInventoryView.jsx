@@ -18,6 +18,10 @@ const SimpleInventoryView = () => {
     navigate('/login');
   };
 
+  const handleAddTransaction = () => {
+    navigate('/inventory/add-transaction');
+  };
+
   useEffect(() => {
     const fetchInventory = async () => {
       setLoading(true);
@@ -109,9 +113,12 @@ const SimpleInventoryView = () => {
             <Link to="/inventory" className="btn btn-secondary mr-2">
               Back to Inventory
             </Link>
-            <Link to={`/inventory/${id}/update`} className="btn btn-primary">
+            <Link to={`/inventory/${id}/update`} className="btn btn-primary mr-2">
               Update Inventory
             </Link>
+            <button onClick={handleAddTransaction} className="btn btn-success">
+              Add Transaction
+            </button>
           </div>
         </div>
 

@@ -22,19 +22,19 @@ const Header = () => {
       <div className="container header-container">
         <Link to="/" className="brand">WholesaleFlow</Link>
 
-        <div className="d-flex align-center">
-          <nav className="nav">
-            <Link to="/dashboard" className={`nav-link ${isActive('/dashboard')}`}>Dashboard</Link>
-            <Link to="/products" className={`nav-link ${isActive('/products')}`}>Products</Link>
-            <Link to="/customers" className={`nav-link ${isActive('/customers')}`}>Customers</Link>
-            <Link to="/inventory" className={`nav-link ${isActive('/inventory')}`}>Inventory</Link>
-            {user && user.role === 'admin' && (
-              <Link to="/staff" className={`nav-link ${isActive('/staff')}`}>Staff</Link>
-            )}
-            <Link to="/login" onClick={handleLogout} className="nav-link">Logout</Link>
-          </nav>
-          <ThemeToggle />
-        </div>
+        <nav className="nav">
+          <Link to="/dashboard" className={`nav-link ${isActive('/dashboard')}`}>Dashboard</Link>
+          <Link to="/products" className={`nav-link ${isActive('/products')}`}>Products</Link>
+          <Link to="/customers" className={`nav-link ${isActive('/customers')}`}>Customers</Link>
+          <Link to="/inventory" className={`nav-link ${isActive('/inventory')}`}>Inventory</Link>
+          {user && user.role === 'admin' && (
+            <Link to="/staff" className={`nav-link ${isActive('/staff')}`}>Staff</Link>
+          )}
+          <Link to="/login" onClick={handleLogout} className="nav-link">Logout</Link>
+          <div className="nav-link theme-toggle-container">
+            <ThemeToggle />
+          </div>
+        </nav>
       </div>
     </header>
   );

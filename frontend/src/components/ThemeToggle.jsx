@@ -5,10 +5,11 @@ const ThemeToggle = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
-    <button 
-      className="theme-toggle" 
-      onClick={toggleTheme} 
+    <button
+      className="theme-toggle"
+      onClick={toggleTheme}
       title={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
     >
       {theme === 'light' ? (
         <span className="theme-toggle-icon">🌙</span>

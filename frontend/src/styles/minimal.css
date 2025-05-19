@@ -68,6 +68,24 @@
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
 }
 
+/* Additional dark theme overrides */
+.theme-dark .card-header {
+  background-color: #1a202c;
+}
+
+.theme-dark .text-muted {
+  color: #cbd5e0;
+}
+
+.theme-dark .quick-action-btn {
+  background-color: #2d3748;
+  color: #e2e8f0;
+}
+
+.theme-dark .quick-action-btn:hover {
+  background-color: #4a5568;
+}
+
 /* Default theme for compatibility */
 :root {
   /* Main colors */
@@ -275,8 +293,26 @@ button {
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.card-header {
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--secondary-color);
+  transition: background-color 0.3s ease;
+}
+
+.card-header h3 {
+  margin: 0;
+  color: var(--text-dark);
+  transition: color 0.3s ease;
+}
+
 .card-body {
   padding: var(--spacing-lg);
+}
+
+.text-muted {
+  color: var(--text-medium);
+  transition: color 0.3s ease;
 }
 
 /* Forms */
@@ -1001,6 +1037,14 @@ textarea.form-control {
 }
 
 /* Theme Toggle Button */
+.theme-toggle-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+  border-bottom: 2px solid transparent !important;
+}
+
 .theme-toggle {
   background: none;
   border: none;
@@ -1013,12 +1057,12 @@ textarea.form-control {
   border-radius: 50%;
   color: var(--text-medium);
   font-size: 1.25rem;
-  transition: background-color 0.2s ease;
-  margin-left: 1rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  padding: 0;
 }
 
 .theme-toggle:hover {
-  background-color: var(--secondary-color);
+  color: var(--primary-color);
 }
 
 .theme-toggle-icon {

@@ -17,6 +17,10 @@ const Header = () => {
     return location.pathname === path ? 'active' : '';
   };
 
+  const isInventoryPage = () => {
+    return location.pathname.startsWith('/inventory');
+  };
+
   return (
     <header className="header">
       <div className="container header-container">
@@ -27,7 +31,7 @@ const Header = () => {
           <Link to="/products" className={`nav-link ${isActive('/products')}`}>Products</Link>
           <Link to="/customers" className={`nav-link ${isActive('/customers')}`}>Customers</Link>
           <Link to="/inventory" className={`nav-link ${isActive('/inventory')}`}>Inventory</Link>
-          {user && user.role === 'admin' && (
+          {user && user.role === 'admin' && isInventoryPage() && (
             <Link to="/staff" className={`nav-link ${isActive('/staff')}`}>Staff</Link>
           )}
           <Link to="/login" onClick={handleLogout} className="nav-link">Logout</Link>

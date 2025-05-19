@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import ThemeContext from '../context/ThemeContext';
 
 const SimpleHome = () => {
+  const { setTheme } = useContext(ThemeContext);
+
+  // Ensure light theme is set on home page
+  useEffect(() => {
+    setTheme('light');
+    document.body.className = 'theme-light';
+  }, [setTheme]);
   return (
     <div className="fade-in">
       <nav className="navbar">

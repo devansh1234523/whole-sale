@@ -1,11 +1,19 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
+import ThemeContext from '../context/ThemeContext';
 import '../styles/minimal.css';
 
 const SimpleLogin = () => {
   const { login, isAuthenticated, error, clearError } = useContext(AuthContext);
+  const { setTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
+
+  // Ensure light theme is set on login page
+  useEffect(() => {
+    setTheme('light');
+    document.body.className = 'theme-light';
+  }, [setTheme]);
 
   const [formData, setFormData] = useState({
     email: '',

@@ -2,11 +2,17 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import ProductContext from '../context/ProductContext';
+import CustomerContext from '../context/CustomerContext';
+import InventoryContext from '../context/InventoryContext';
+import StaffContext from '../context/StaffContext';
 import '../styles/minimal.css';
 
 const SimpleDashboard = () => {
   const { user, logout } = useContext(AuthContext);
   const { products } = useContext(ProductContext);
+  const { customers } = useContext(CustomerContext);
+  const { inventoryItems } = useContext(InventoryContext);
+  const { staffMembers } = useContext(StaffContext);
   const navigate = useNavigate();
   const [stats, setStats] = useState({
     totalProducts: 0,
@@ -22,6 +28,22 @@ const SimpleDashboard = () => {
     navigate('/login');
   };
 
+  const handleAddProduct = () => {
+    navigate('/products/add');
+  };
+
+  const handleAddCustomer = () => {
+    navigate('/customers/add');
+  };
+
+  const handleUpdateInventory = () => {
+    navigate('/inventory');
+  };
+
+  const handleAddStaff = () => {
+    navigate('/staff/add');
+  };
+
 
 
   useEffect(() => {
@@ -32,13 +54,12 @@ const SimpleDashboard = () => {
           product.stockQuantity <= product.lowStockThreshold
         ).length;
 
-        // In a real application, you would fetch customer and staff data from an API
-        // For now, we'll use mock data for those
+        // Use actual data from contexts
         setStats({
           totalProducts: products.length,
           lowStockProducts: lowStockCount,
-          totalCustomers: 42,
-          totalStaff: 8,
+          totalCustomers: customers.length,
+          totalStaff: staffMembers.length,
         });
 
         setLoading(false);
@@ -49,7 +70,7 @@ const SimpleDashboard = () => {
     };
 
     fetchDashboardData();
-  }, [products]);
+  }, [products, customers, staffMembers]);
 
   if (loading) {
     return (
@@ -156,26 +177,26 @@ const SimpleDashboard = () => {
             </div>
             <div className="card-body">
               <div className="quick-actions">
-                <Link to="/products/add" className="quick-action-btn">
+                <button onClick={handleAddProduct} className="quick-action-btn">
                   <span className="quick-action-icon" style={{ color: 'var(--primary-color)' }}>➕</span>
                   <span>Add New Product</span>
-                </Link>
+                </button>
 
-                <Link to="/customers/add" className="quick-action-btn">
+                <button onClick={handleAddCustomer} className="quick-action-btn">
                   <span className="quick-action-icon" style={{ color: 'var(--success-color)' }}>➕</span>
                   <span>Add New Customer</span>
-                </Link>
+                </button>
 
-                <Link to="/inventory" className="quick-action-btn">
+                <button onClick={handleUpdateInventory} className="quick-action-btn">
                   <span className="quick-action-icon" style={{ color: 'var(--warning-color)' }}>🔄</span>
                   <span>Update Inventory</span>
-                </Link>
+                </button>
 
                 {user && user.role === 'admin' && (
-                  <Link to="/staff" className="quick-action-btn">
+                  <button onClick={handleAddStaff} className="quick-action-btn">
                     <span className="quick-action-icon" style={{ color: '#a855f7' }}>➕</span>
                     <span>Add New Staff</span>
-                  </Link>
+                  </button>
                 )}
               </div>
             </div>

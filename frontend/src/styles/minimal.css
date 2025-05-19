@@ -913,6 +913,10 @@ textarea.form-control {
   border-radius: var(--radius);
   text-decoration: none;
   transition: transform 0.2s ease;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
 }
 
 .quick-action-btn:hover {

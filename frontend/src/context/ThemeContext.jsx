@@ -7,19 +7,16 @@ const ThemeContext = createContext();
 export const ThemeProvider = ({ children }) => {
   // Check if there's a theme preference in localStorage
   const getInitialTheme = () => {
-    // Clear any existing theme first to ensure we start fresh
-    localStorage.removeItem('theme');
-    // Always return light theme as default
-    return 'light';
+    const savedTheme = localStorage.getItem('theme');
+    // Return saved theme if it exists, otherwise default to light
+    return savedTheme || 'light';
   };
 
   const [theme, setTheme] = useState(getInitialTheme);
 
-  // Apply the default theme class to body immediately
-  document.body.className = 'theme-light';
-
-  // Update localStorage when theme changes
+  // Update localStorage and apply theme class when theme changes
   useEffect(() => {
+    // Save theme to localStorage
     localStorage.setItem('theme', theme);
 
     // Apply theme class to the body element

@@ -1068,3 +1068,15 @@ textarea.form-control {
 .theme-toggle-icon {
   font-size: 1.25rem;
 }
+
+/* Home page theme toggle styling */
+.navbar .theme-toggle {
+  background-color: transparent;
+  color: var(--primary-color);
+  width: 32px;
+  height: 32px;
+}
+
+.navbar .theme-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}

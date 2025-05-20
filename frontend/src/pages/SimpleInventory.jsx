@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import InventoryContext from '../context/InventoryContext';
+import Header from '../components/Header';
 import '../styles/minimal.css';
 
 const SimpleInventory = () => {
@@ -69,22 +70,7 @@ const SimpleInventory = () => {
 
   return (
     <div className="fade-in">
-      <header className="header">
-        <div className="container header-container">
-          <Link to="/" className="brand">WholesaleFlow</Link>
-
-          <nav className="nav">
-            <Link to="/dashboard" className="nav-link">Dashboard</Link>
-            <Link to="/products" className="nav-link">Products</Link>
-            <Link to="/customers" className="nav-link">Customers</Link>
-            <Link to="/inventory" className="nav-link active">Inventory</Link>
-            {user && user.role === 'admin' && (
-              <Link to="/staff" className="nav-link">Staff</Link>
-            )}
-            <Link to="/login" onClick={handleLogout} className="nav-link">Logout</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <div className="container">
         <div className="page-header">

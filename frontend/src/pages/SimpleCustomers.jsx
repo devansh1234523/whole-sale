@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import CustomerContext from '../context/CustomerContext';
 import { convertAndFormatINR } from '../utils/currencyUtils';
+import Header from '../components/Header';
 import '../styles/minimal.css';
 
 const SimpleCustomers = () => {
@@ -57,19 +58,7 @@ const SimpleCustomers = () => {
 
   return (
     <div className="fade-in">
-      <header className="header">
-        <div className="container header-container">
-          <Link to="/" className="brand">WholesaleFlow</Link>
-
-          <nav className="nav">
-            <Link to="/dashboard" className="nav-link">Dashboard</Link>
-            <Link to="/products" className="nav-link">Products</Link>
-            <Link to="/customers" className="nav-link active">Customers</Link>
-            <Link to="/inventory" className="nav-link">Inventory</Link>
-            <Link to="/login" onClick={handleLogout} className="nav-link">Logout</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <div className="container">
         <div className="page-header">

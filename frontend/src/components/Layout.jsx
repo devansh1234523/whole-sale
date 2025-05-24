@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import Navbar from './Navbar';
+import Footer from './Footer';
 import AuthContext from '../context/AuthContext';
 
 // Layout component for authenticated pages
@@ -25,6 +26,7 @@ export const PrivateLayout = ({ children }) => {
       <main className="container mx-auto px-4 py-6">
         {children}
       </main>
+      <Footer />
     </div>
   );
 };
@@ -55,6 +57,7 @@ export const AdminLayout = ({ children }) => {
       <main className="container mx-auto px-4 py-6">
         {children}
       </main>
+      <Footer />
     </div>
   );
 };
@@ -67,6 +70,7 @@ export const PublicLayout = ({ children }) => {
       <main className="container mx-auto px-4 py-6">
         {children}
       </main>
+      <Footer />
     </div>
   );
 };

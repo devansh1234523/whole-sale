@@ -1,19 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
-import ThemeContext from '../context/ThemeContext';
+import ThemeToggle from '../components/ThemeToggle';
+import Footer from '../components/Footer';
 import '../styles/minimal.css';
 
 const SimpleLogin = () => {
   const { login, isAuthenticated, error, clearError } = useContext(AuthContext);
-  const { setTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
-
-  // Ensure light theme is set on login page
-  useEffect(() => {
-    setTheme('light');
-    document.body.className = 'theme-light';
-  }, [setTheme]);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -80,6 +74,11 @@ const SimpleLogin = () => {
 
   return (
     <div className="login-container fade-in">
+      {/* Theme Toggle positioned at top right */}
+      <div style={{ position: 'absolute', top: '20px', right: '20px', zIndex: 1000 }}>
+        <ThemeToggle />
+      </div>
+
       <div className="login-sidebar">
         <h1>WholesaleFlow</h1>
         <p>Streamline your wholesale operations with our all-in-one management platform.</p>
@@ -193,6 +192,7 @@ const SimpleLogin = () => {
           </form>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

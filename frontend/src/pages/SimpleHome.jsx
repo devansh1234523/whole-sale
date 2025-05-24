@@ -1,27 +1,26 @@
 import React, { useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import ThemeContext from '../context/ThemeContext';
+import ThemeToggle from '../components/ThemeToggle';
+import Footer from '../components/Footer';
 
 const SimpleHome = () => {
-  const { setTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
+  const isDarkMode = theme === 'dark';
 
-  // Set theme to light and scroll to top when component mounts
+  // Scroll to top when component mounts
   useEffect(() => {
-    // Force light theme on home page
-    setTheme('light');
-    document.body.className = 'theme-light';
-
-    // Scroll to top
     window.scrollTo(0, 0);
-  }, [setTheme]);
+  }, []);
   return (
     <div className="fade-in">
       <nav className="navbar">
         <div className="container navbar-container">
           <Link to="/" className="navbar-brand">WholesaleFlow</Link>
-          <div className="navbar-links">
+          <div className="navbar-links" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <Link to="/login" className="navbar-link">Login</Link>
             <Link to="/register" className="navbar-link">Register</Link>
+            <ThemeToggle />
           </div>
         </div>
       </nav>
@@ -525,7 +524,7 @@ const SimpleHome = () => {
       <div style={{
         padding: '5rem 0',
         marginBottom: '4rem',
-        background: 'linear-gradient(to bottom, #ffffff, #f8fafc)',
+        background: isDarkMode ? '#000000' : 'linear-gradient(to bottom, #ffffff, #f8fafc)',
         borderRadius: '16px',
         position: 'relative',
         overflow: 'hidden'
@@ -536,7 +535,7 @@ const SimpleHome = () => {
           left: '0',
           width: '100%',
           height: '100%',
-          backgroundImage: 'radial-gradient(circle at 20% 20%, rgba(236, 242, 255, 0.7) 0%, rgba(236, 242, 255, 0) 50%), radial-gradient(circle at 80% 80%, rgba(236, 242, 255, 0.7) 0%, rgba(236, 242, 255, 0) 50%)',
+          backgroundImage: isDarkMode ? 'none' : 'radial-gradient(circle at 20% 20%, rgba(236, 242, 255, 0.7) 0%, rgba(236, 242, 255, 0) 50%), radial-gradient(circle at 80% 80%, rgba(236, 242, 255, 0.7) 0%, rgba(236, 242, 255, 0) 50%)',
           zIndex: '0'
         }}></div>
 
@@ -546,7 +545,7 @@ const SimpleHome = () => {
               fontSize: '2.5rem',
               fontWeight: 'bold',
               marginBottom: '1rem',
-              color: 'var(--text-dark)',
+              color: isDarkMode ? 'white' : 'var(--text-dark)',
               position: 'relative',
               display: 'inline-block'
             }}>
@@ -564,7 +563,7 @@ const SimpleHome = () => {
             </h2>
             <p style={{
               fontSize: '1.25rem',
-              color: 'var(--text-medium)',
+              color: isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'var(--text-medium)',
               maxWidth: '700px',
               margin: '0 auto',
               lineHeight: '1.7'
@@ -583,7 +582,9 @@ const SimpleHome = () => {
               overflow: 'hidden',
               position: 'relative',
               borderRadius: '16px',
-              boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05)',
+              backgroundColor: isDarkMode ? '#1a1a1a' : 'white',
+              border: isDarkMode ? '1px solid #333333' : 'none',
+              boxShadow: isDarkMode ? '0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2)' : '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05)',
               transition: 'transform 0.3s ease, box-shadow 0.3s ease',
               cursor: 'pointer',
               transform: 'translateY(0)'
@@ -612,7 +613,7 @@ const SimpleHome = () => {
                     fontFamily: 'Georgia, serif'
                   }}>"</div>
                   <p style={{
-                    color: 'var(--text-medium)',
+                    color: isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'var(--text-medium)',
                     fontStyle: 'italic',
                     marginBottom: '0',
                     flex: '1',
@@ -627,7 +628,7 @@ const SimpleHome = () => {
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
-                  borderTop: '1px solid #e2e8f0',
+                  borderTop: isDarkMode ? '1px solid #333333' : '1px solid #e2e8f0',
                   paddingTop: '1.5rem'
                 }}>
                   <div style={{
@@ -649,7 +650,7 @@ const SimpleHome = () => {
                   <div>
                     <p style={{
                       fontWeight: '700',
-                      color: 'var(--text-dark)',
+                      color: isDarkMode ? 'white' : 'var(--text-dark)',
                       marginBottom: '0.25rem',
                       fontSize: '1.25rem'
                     }}>
@@ -657,7 +658,7 @@ const SimpleHome = () => {
                     </p>
                     <p style={{
                       fontSize: '1rem',
-                      color: 'var(--text-light)',
+                      color: isDarkMode ? 'rgba(255, 255, 255, 0.6)' : 'var(--text-light)',
                       display: 'flex',
                       alignItems: 'center'
                     }}>
@@ -681,7 +682,9 @@ const SimpleHome = () => {
               overflow: 'hidden',
               position: 'relative',
               borderRadius: '16px',
-              boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05)',
+              backgroundColor: isDarkMode ? '#1a1a1a' : 'white',
+              border: isDarkMode ? '1px solid #333333' : 'none',
+              boxShadow: isDarkMode ? '0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2)' : '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05)',
               transition: 'transform 0.3s ease, box-shadow 0.3s ease',
               cursor: 'pointer',
               transform: 'translateY(0)'
@@ -710,7 +713,7 @@ const SimpleHome = () => {
                     fontFamily: 'Georgia, serif'
                   }}>"</div>
                   <p style={{
-                    color: 'var(--text-medium)',
+                    color: isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'var(--text-medium)',
                     fontStyle: 'italic',
                     marginBottom: '0',
                     flex: '1',
@@ -725,7 +728,7 @@ const SimpleHome = () => {
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
-                  borderTop: '1px solid #e2e8f0',
+                  borderTop: isDarkMode ? '1px solid #333333' : '1px solid #e2e8f0',
                   paddingTop: '1.5rem'
                 }}>
                   <div style={{
@@ -747,7 +750,7 @@ const SimpleHome = () => {
                   <div>
                     <p style={{
                       fontWeight: '700',
-                      color: 'var(--text-dark)',
+                      color: isDarkMode ? 'white' : 'var(--text-dark)',
                       marginBottom: '0.25rem',
                       fontSize: '1.25rem'
                     }}>
@@ -755,7 +758,7 @@ const SimpleHome = () => {
                     </p>
                     <p style={{
                       fontSize: '1rem',
-                      color: 'var(--text-light)',
+                      color: isDarkMode ? 'rgba(255, 255, 255, 0.6)' : 'var(--text-light)',
                       display: 'flex',
                       alignItems: 'center'
                     }}>
@@ -779,7 +782,9 @@ const SimpleHome = () => {
               overflow: 'hidden',
               position: 'relative',
               borderRadius: '16px',
-              boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05)',
+              backgroundColor: isDarkMode ? '#1a1a1a' : 'white',
+              border: isDarkMode ? '1px solid #333333' : 'none',
+              boxShadow: isDarkMode ? '0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2)' : '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05)',
               transition: 'transform 0.3s ease, box-shadow 0.3s ease',
               cursor: 'pointer',
               transform: 'translateY(0)'
@@ -808,7 +813,7 @@ const SimpleHome = () => {
                     fontFamily: 'Georgia, serif'
                   }}>"</div>
                   <p style={{
-                    color: 'var(--text-medium)',
+                    color: isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'var(--text-medium)',
                     fontStyle: 'italic',
                     marginBottom: '0',
                     flex: '1',
@@ -823,7 +828,7 @@ const SimpleHome = () => {
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
-                  borderTop: '1px solid #e2e8f0',
+                  borderTop: isDarkMode ? '1px solid #333333' : '1px solid #e2e8f0',
                   paddingTop: '1.5rem'
                 }}>
                   <div style={{
@@ -845,7 +850,7 @@ const SimpleHome = () => {
                   <div>
                     <p style={{
                       fontWeight: '700',
-                      color: 'var(--text-dark)',
+                      color: isDarkMode ? 'white' : 'var(--text-dark)',
                       marginBottom: '0.25rem',
                       fontSize: '1.25rem'
                     }}>
@@ -853,7 +858,7 @@ const SimpleHome = () => {
                     </p>
                     <p style={{
                       fontSize: '1rem',
-                      color: 'var(--text-light)',
+                      color: isDarkMode ? 'rgba(255, 255, 255, 0.6)' : 'var(--text-light)',
                       display: 'flex',
                       alignItems: 'center'
                     }}>
@@ -877,7 +882,7 @@ const SimpleHome = () => {
 
       {/* FAQ Section */}
       <div style={{
-        background: '#f8fafc',
+        background: isDarkMode ? '#000000' : '#f8fafc',
         padding: '4rem 0',
         marginBottom: '4rem',
         borderRadius: '8px'
@@ -888,51 +893,66 @@ const SimpleHome = () => {
             fontSize: '2rem',
             fontWeight: 'bold',
             marginBottom: '3rem',
-            color: 'var(--text-dark)'
+            color: isDarkMode ? 'white' : 'var(--text-dark)'
           }}>
             Frequently Asked Questions
           </h2>
 
           <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-            <div className="card" style={{ marginBottom: '1rem' }}>
+            <div className="card" style={{
+              marginBottom: '1rem',
+              backgroundColor: isDarkMode ? '#2a2a2a' : 'white',
+              border: isDarkMode ? 'none' : '1px solid var(--border-color)'
+            }}>
               <div className="card-body">
                 <h3 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.75rem', color: 'var(--primary-color)' }}>
                   How does WholesaleFlow help with inventory management?
                 </h3>
-                <p style={{ color: 'var(--text-medium)' }}>
+                <p style={{ color: isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'var(--text-medium)' }}>
                   WholesaleFlow provides real-time tracking of your inventory levels, automatic low stock alerts, and detailed reports on product movement. This helps you maintain optimal stock levels and avoid both stockouts and excess inventory.
                 </p>
               </div>
             </div>
 
-            <div className="card" style={{ marginBottom: '1rem' }}>
+            <div className="card" style={{
+              marginBottom: '1rem',
+              backgroundColor: isDarkMode ? '#2a2a2a' : 'white',
+              border: isDarkMode ? 'none' : '1px solid var(--border-color)'
+            }}>
               <div className="card-body">
                 <h3 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.75rem', color: 'var(--primary-color)' }}>
                   Can I customize the platform to fit my business needs?
                 </h3>
-                <p style={{ color: 'var(--text-medium)' }}>
+                <p style={{ color: isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'var(--text-medium)' }}>
                   Yes! WholesaleFlow is highly customizable. You can configure product categories, customer segments, user roles, and reporting dashboards to match your specific business requirements.
                 </p>
               </div>
             </div>
 
-            <div className="card" style={{ marginBottom: '1rem' }}>
+            <div className="card" style={{
+              marginBottom: '1rem',
+              backgroundColor: isDarkMode ? '#2a2a2a' : 'white',
+              border: isDarkMode ? 'none' : '1px solid var(--border-color)'
+            }}>
               <div className="card-body">
                 <h3 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.75rem', color: 'var(--primary-color)' }}>
                   Is my data secure with WholesaleFlow?
                 </h3>
-                <p style={{ color: 'var(--text-medium)' }}>
+                <p style={{ color: isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'var(--text-medium)' }}>
                   Absolutely. We implement industry-leading security measures including end-to-end encryption, regular security audits, and strict access controls. Your business data is always protected.
                 </p>
               </div>
             </div>
 
-            <div className="card">
+            <div className="card" style={{
+              backgroundColor: isDarkMode ? '#2a2a2a' : 'white',
+              border: isDarkMode ? 'none' : '1px solid var(--border-color)'
+            }}>
               <div className="card-body">
                 <h3 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.75rem', color: 'var(--primary-color)' }}>
                   Do you offer customer support?
                 </h3>
-                <p style={{ color: 'var(--text-medium)' }}>
+                <p style={{ color: isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'var(--text-medium)' }}>
                   We provide 24/7 customer support through multiple channels including live chat, email, and phone. Our dedicated support team is always ready to assist you with any questions or issues.
                 </p>
               </div>
@@ -967,6 +987,7 @@ const SimpleHome = () => {
         </div>
       </div>
 
+      <Footer />
     </div>
   );
 };

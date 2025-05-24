@@ -30,6 +30,14 @@ import SimpleAddStaff from './pages/SimpleAddStaff';
 import SimpleStaffView from './pages/SimpleStaffView';
 import SimpleStaffEdit from './pages/SimpleStaffEdit';
 
+// Legal Pages
+import TermsConditions from './pages/TermsConditions';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import CookiePolicy from './pages/CookiePolicy';
+import RefundPolicy from './pages/RefundPolicy';
+import Licensing from './pages/Licensing';
+import Sitemap from './pages/Sitemap';
+
 function App() {
   return (
     <ThemeProvider>
@@ -62,7 +70,14 @@ function App() {
             <Route path="/staff/:id/edit" element={<SimpleStaffEdit />} />
             <Route path="/staff/:id" element={<SimpleStaffView />} />
             <Route path="/staff" element={<SimpleStaff />} />
-            {/* Add more routes as needed */}
+
+            {/* Legal Pages */}
+            <Route path="/terms" element={<TermsConditions />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/cookies" element={<CookiePolicy />} />
+            <Route path="/refund" element={<RefundPolicy />} />
+            <Route path="/licensing" element={<Licensing />} />
+            <Route path="/sitemap" element={<Sitemap />} />
                   </Routes>
                 </Router>
               </StaffProvider>

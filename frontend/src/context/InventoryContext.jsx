@@ -172,12 +172,58 @@ export const InventoryProvider = ({ children }) => {
     return inventoryItems.find(item => item.id === parseInt(inventoryId));
   };
 
+  // Add a new inventory item for a product
+  const addInventoryItem = (product) => {
+    // Generate a new inventory ID
+    const newId = inventoryItems.length > 0
+      ? Math.max(...inventoryItems.map(item => item.id)) + 1
+      : 1;
+
+    // Get current timestamp
+    const now = new Date().toISOString();
+
+    // Create the new inventory item
+    const newInventoryItem = {
+      id: newId,
+      product: {
+        id: product.id,
+        name: product.name,
+        sku: product.sku,
+        category: product.category,
+        price: product.price
+      },
+      quantity: product.stockQuantity || 0,
+      location: {
+        warehouse: 'Main Warehouse',
+        section: 'A',
+        shelf: '1'
+      },
+      lastUpdated: now,
+      createdAt: now,
+      transactions: [
+        {
+          id: 1,
+          type: 'in',
+          quantity: product.stockQuantity || 0,
+          date: now,
+          reason: 'Initial stock from product creation',
+          performedBy: 'System'
+        }
+      ]
+    };
+
+    // Add the new inventory item to the state
+    setInventoryItems([...inventoryItems, newInventoryItem]);
+    return newInventoryItem;
+  };
+
   // The context value that will be provided
   const contextValue = {
     inventoryItems,
     addTransaction,
     updateInventory,
-    getInventoryById
+    getInventoryById,
+    addInventoryItem
   };
 
   return (

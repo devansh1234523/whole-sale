@@ -1,13 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
-import ProductContext from '../context/ProductContext';
 import { convertINRtoUSD } from '../utils/currencyUtils';
+import { useProductInventory } from '../hooks/useProductInventory';
 import '../styles/minimal.css';
 
 const SimpleAddProduct = () => {
   const { user, logout } = useContext(AuthContext);
-  const { addProduct } = useContext(ProductContext);
+  const { addProduct } = useProductInventory();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
